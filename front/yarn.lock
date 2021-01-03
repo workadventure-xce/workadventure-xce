@@ -3756,6 +3756,11 @@ phaser@^3.52.0:
   version "3.52.0"
   resolved "https://registry.yarnpkg.com/phaser/-/phaser-3.52.0.tgz#834dd7a7717308c2576d2450d0806317cf3d1ea8"
   integrity sha512-oH39AUXR+cletB3GIvLnVO2J7/M6xs0D0LamVdCrbCDO3jckQOVBcqR6SJ2wam+4D5iJTCXv8K+FmxFzcTUWuA==
+
+phaser-animated-tiles@Informatic/phaser-animated-tiles#2d5c66a9bc426dd4cb2d856c1d599494a74f8067:
+  version "2.0.2"
+  resolved "https://codeload.github.com/Informatic/phaser-animated-tiles/tar.gz/2d5c66a9bc426dd4cb2d856c1d599494a74f8067"
+
   dependencies:
     eventemitter3 "^4.0.7"
     exports-loader "^1.1.1"
