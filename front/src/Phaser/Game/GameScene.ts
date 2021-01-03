@@ -83,6 +83,8 @@ import {joystickBaseImg, joystickBaseKey, joystickThumbImg, joystickThumbKey} fr
 import { InteractiveLayer } from "../Map/InteractiveLayer";
 import {videoManager} from "../../WebRtc/VideoManager";
 
+import AnimatedTiles from "phaser-animated-tiles";
+
 export interface GameSceneInitInterface {
     initPosition: PointInterface|null,
     reconnecting: boolean
@@ -130,6 +132,7 @@ export class GameScene extends ResizableScene implements CenterListener {
     interactiveLayers!: Array<InteractiveLayer>;
     Objects!: Array<Phaser.Physics.Arcade.Sprite>;
     mapFile!: ITiledMap;
+    animatedTiles!: AnimatedTiles;
     groups: Map<number, Sprite>;
     startX!: number;
     startY!: number;
@@ -246,6 +249,7 @@ export class GameScene extends ResizableScene implements CenterListener {
                 message: this.originalMapUrl ?? file.src
             });
         });
+        this.load.scenePlugin('AnimatedTiles', AnimatedTiles, 'animatedTiles', 'animatedTiles');
         this.load.on('filecomplete-tilemapJSON-'+this.MapUrlFile, (key: string, type: string, data: unknown) => {
             this.onMapLoad(data);
         });
@@ -447,6 +451,7 @@ export class GameScene extends ResizableScene implements CenterListener {
 
         this.initCamera();
 
+        this.animatedTiles.init(this.Map);
         this.initCirclesCanvas();
 
         // Let's pause the scene if the connection is not established yet
