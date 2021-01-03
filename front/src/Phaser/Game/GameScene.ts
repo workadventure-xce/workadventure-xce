@@ -71,6 +71,8 @@ import DOMElement = Phaser.GameObjects.DOMElement;
 import {Subscription} from "rxjs";
 import {worldFullMessageStream} from "../../Connexion/WorldFullMessageStream";
 
+import AnimatedTiles from "phaser-animated-tiles";
+
 export interface GameSceneInitInterface {
     initPosition: PointInterface|null,
     reconnecting: boolean
@@ -117,6 +119,7 @@ export class GameScene extends ResizableScene implements CenterListener {
     Layers!: Array<Phaser.Tilemaps.TilemapLayer>;
     Objects!: Array<Phaser.Physics.Arcade.Sprite>;
     mapFile!: ITiledMap;
+    animatedTiles!: AnimatedTiles;
     groups: Map<number, Sprite>;
     startX!: number;
     startY!: number;
@@ -211,6 +214,7 @@ export class GameScene extends ResizableScene implements CenterListener {
                 message: file.src
             });
         });
+        this.load.scenePlugin('AnimatedTiles', AnimatedTiles, 'animatedTiles', 'animatedTiles');
         this.load.on('filecomplete-tilemapJSON-'+this.MapUrlFile, (key: string, type: string, data: unknown) => {
             this.onMapLoad(data);
         });
@@ -392,6 +396,7 @@ export class GameScene extends ResizableScene implements CenterListener {
 
         this.initCamera();
 
+        this.animatedTiles.init(this.Map);
         this.initCirclesCanvas();
 
         // Let's pause the scene if the connection is not established yet
