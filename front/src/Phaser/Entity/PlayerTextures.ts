@@ -72,6 +72,28 @@ export const COLOR_RESOURCES: BodyResourceDescriptionListInterface = {
     color_31: { name: "color_31", img: "resources/customisation/character_color/character_color30.png" },
     color_32: { name: "color_32", img: "resources/customisation/character_color/character_color31.png" },
     color_33: { name: "color_33", img: "resources/customisation/character_color/character_color32.png" },
+    bodies_001: { name: "bodies_001", img: "resources/customisation/character_color/bodies_001.png" },
+    bodies_002: { name: "bodies_002", img: "resources/customisation/character_color/bodies_002.png" },
+    bodies_003: { name: "bodies_003", img: "resources/customisation/character_color/bodies_003.png" },
+    bodies_004: { name: "bodies_004", img: "resources/customisation/character_color/bodies_004.png" },
+    bodies_005: { name: "bodies_005", img: "resources/customisation/character_color/bodies_005.png" },
+    bodies_006: { name: "bodies_006", img: "resources/customisation/character_color/bodies_006.png" },
+    bodies_007: { name: "bodies_007", img: "resources/customisation/character_color/bodies_007.png" },
+    bodies_008: { name: "bodies_008", img: "resources/customisation/character_color/bodies_008.png" },
+    bodies_009: { name: "bodies_009", img: "resources/customisation/character_color/bodies_009.png" },
+    bodies_010: { name: "bodies_010", img: "resources/customisation/character_color/bodies_010.png" },
+    bodies_011: { name: "bodies_011", img: "resources/customisation/character_color/bodies_011.png" },
+    bodies_012: { name: "bodies_012", img: "resources/customisation/character_color/bodies_012.png" },
+    bodies_013: { name: "bodies_013", img: "resources/customisation/character_color/bodies_013.png" },
+    bodies_014: { name: "bodies_014", img: "resources/customisation/character_color/bodies_014.png" },
+    bodies_015: { name: "bodies_015", img: "resources/customisation/character_color/bodies_015.png" },
+    bodies_016: { name: "bodies_016", img: "resources/customisation/character_color/bodies_016.png" },
+    bodies_017: { name: "bodies_017", img: "resources/customisation/character_color/bodies_017.png" },
+    old_01: { name: "old_01", img: "resources/customisation/character_color/old_01.png" },
+    old_02: { name: "old_02", img: "resources/customisation/character_color/old_02.png" },
+    old_03: { name: "old_03", img: "resources/customisation/character_color/old_03.png" },
+    old_04: { name: "old_04", img: "resources/customisation/character_color/old_04.png" },
+    old_05: { name: "old_05", img: "resources/customisation/character_color/old_05.png" },
 };
 
 export const EYES_RESOURCES: BodyResourceDescriptionListInterface = {
@@ -105,6 +127,11 @@ export const EYES_RESOURCES: BodyResourceDescriptionListInterface = {
     eyes_28: { name: "eyes_28", img: "resources/customisation/character_eyes/character_eyes28.png" },
     eyes_29: { name: "eyes_29", img: "resources/customisation/character_eyes/character_eyes29.png" },
     eyes_30: { name: "eyes_30", img: "resources/customisation/character_eyes/character_eyes30.png" },
+    eyes_31: { name: "eyes_31", img: "resources/customisation/character_eyes/character_eyes31.png" },
+    eyes_32: { name: "eyes_32", img: "resources/customisation/character_eyes/character_eyes32.png" },
+    eyes_33: { name: "eyes_33", img: "resources/customisation/character_eyes/character_eyes33.png" },
+    eyes_34: { name: "eyes_34", img: "resources/customisation/character_eyes/character_eyes34.png" },
+    eyes_35: { name: "eyes_35", img: "resources/customisation/character_eyes/character_eyes35.png" },
 };
 
 export const HAIR_RESOURCES: BodyResourceDescriptionListInterface = {
@@ -182,9 +209,18 @@ export const HAIR_RESOURCES: BodyResourceDescriptionListInterface = {
     hair_72: { name: "hair_72", img: "resources/customisation/character_hairs/character_hairs71.png" },
     hair_73: { name: "hair_73", img: "resources/customisation/character_hairs/character_hairs72.png" },
     hair_74: { name: "hair_74", img: "resources/customisation/character_hairs/character_hairs73.png" },
+    hair_75: { name: "hair_75", img: "resources/customisation/character_hairs/character_hairs13_rainbow.png" },
+    hair_76: { name: "hair_76", img: "resources/customisation/character_hairs/character_hairs17_brown.png" },
+    hair_77: { name: "hair_77", img: "resources/customisation/character_hairs/character_hairs17_petrol.png" },
+    hair_78: { name: "hair_78", img: "resources/customisation/character_hairs/character_hairs21_grey.png" },
+    hair_79: { name: "hair_79", img: "resources/customisation/character_hairs/character_hairs24_blue.png" },
+    hair_80: { name: "hair_80", img: "resources/customisation/character_hairs/character_hairs40_petrol.png" },
+    hair_81: { name: "hair_81", img: "resources/customisation/character_hairs/character_hairs40_red.png" },
+    hair_82: { name: "hair_82", img: "resources/customisation/character_hairs/character_hairs40_ultramarine.png" },
 };
 
 export const CLOTHES_RESOURCES: BodyResourceDescriptionListInterface = {
+    naked: { name: "naked", img: "resources/customisation/character_clothes/naked.png" },
     clothes_1: { name: "clothes_1", img: "resources/customisation/character_clothes/character_clothes0.png" },
     clothes_2: { name: "clothes_2", img: "resources/customisation/character_clothes/character_clothes1.png" },
     clothes_3: { name: "clothes_3", img: "resources/customisation/character_clothes/character_clothes2.png" },
@@ -268,6 +304,25 @@ export const CLOTHES_RESOURCES: BodyResourceDescriptionListInterface = {
         img: "resources/customisation/character_clothes/white_hoodie.png",
     },
     clothes_engelbert: { name: "clothes_engelbert", img: "resources/customisation/character_clothes/engelbert.png" },
+    clothes_red_stripes: {
+        name: "clothes_red_stripes",
+        img: "resources/customisation/character_clothes/red_stripes.png",
+    },
+    clothes_vest_yellow: {
+        name: "clothes_vest_yellow",
+        img: "resources/customisation/character_clothes/vest_yellow.png",
+    },
+    clothes_vest_orange: {
+        name: "clothes_vest_orange",
+        img: "resources/customisation/character_clothes/vest_orange.png",
+    },
+    clothes_vest_red: { name: "clothes_vest_red", img: "resources/customisation/character_clothes/vest_red.png" },
+    clothes_vest_purple: {
+        name: "clothes_vest_purple",
+        img: "resources/customisation/character_clothes/vest_purple.png",
+    },
+    clothes_vest_blue: { name: "clothes_vest_blue", img: "resources/customisation/character_clothes/vest_blue.png" },
+    clothes_vest_green: { name: "clothes_vest_green", img: "resources/customisation/character_clothes/vest_green.png" },
 };
 
 export const HATS_RESOURCES: BodyResourceDescriptionListInterface = {
@@ -298,6 +353,11 @@ export const HATS_RESOURCES: BodyResourceDescriptionListInterface = {
     hats_25: { name: "hats_25", img: "resources/customisation/character_hats/character_hats25.png" },
     hats_26: { name: "hats_26", img: "resources/customisation/character_hats/character_hats26.png" },
     tinfoil_hat1: { name: "tinfoil_hat1", img: "resources/customisation/character_hats/tinfoil_hat1.png" },
+    purple_hat: { name: "purple_hat", img: "resources/customisation/character_hats/purple_hat.png" },
+    diving_mask1: { name: "diving_mask1", img: "resources/customisation/character_hats/diving_mask1.png" },
+    accessory_mask: { name: "accessory_mask", img: "resources/customisation/character_accessories/mask.png" },
+    sign_dont_talk: { name: "sign_dont_talk", img: "resources/customisation/character_accessories/sign-dont-talk.png" },
+    sign_talk: { name: "sign_talk", img: "resources/customisation/character_accessories/sign-talk.png" },
 };
 
 export const ACCESSORIES_RESOURCES: BodyResourceDescriptionListInterface = {
@@ -326,6 +386,31 @@ export const ACCESSORIES_RESOURCES: BodyResourceDescriptionListInterface = {
         img: "resources/customisation/character_accessories/mate_bottle1.png",
     },
     accessory_mask: { name: "accessory_mask", img: "resources/customisation/character_accessories/mask.png" },
+    accessory_wings_01: {
+        name: "accessory_wings_01",
+        img: "resources/customisation/character_accessories/wings_01.png",
+    },
+    accessory_wings_02: {
+        name: "accessory_wings_02",
+        img: "resources/customisation/character_accessories/wings_02.png",
+    },
+    accessory_wheelchair: {
+        name: "accessory_wheelchair",
+        img: "resources/customisation/character_accessories/wheelchair.png",
+    },
+    accessory_backpack: {
+        name: "accessory_backpack",
+        img: "resources/customisation/character_accessories/backpack.png",
+    },
+    accessory_ring: { name: "accessory_ring", img: "resources/customisation/character_accessories/ring.png" },
+    accessory_sign_dont_talk: {
+        name: "accessory_sign_dont_talk",
+        img: "resources/customisation/character_accessories/sign-dont-talk.png",
+    },
+    accessory_sign_talk: {
+        name: "accessory_sign_talk",
+        img: "resources/customisation/character_accessories/sign-talk.png",
+    },
 };
 
 export const LAYERS: BodyResourceDescriptionListInterface[] = [
