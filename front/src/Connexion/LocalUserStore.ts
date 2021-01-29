@@ -78,21 +78,21 @@ class LocalUserStore {
     getAudioPlayerMuted(): boolean {
         const value = storage.getItem(audioPlayerMuteKey);
         return (value === 'true') ? true : false;
-
+    }
     setJoystick(value: boolean): void {
-        storage.setItem(joystickKey, value.toString())
+        storage.setItem(joystickKey, value.toString());
     }
     getJoystick(): boolean {
         try {
-            const joystickVisible = storage.getItem(joystickKey)
+            const joystickVisible = storage.getItem(joystickKey);
             if (joystickVisible) {
-                const joystick = JSON.parse(joystickVisible)
-                return joystick ?? false
+                const joystick = JSON.parse(joystickVisible);
+                return joystick ?? false;
             } else {
-                return false
+                return false;
             }
         } catch {
-            return false
+            return false;
         }
     }
 
