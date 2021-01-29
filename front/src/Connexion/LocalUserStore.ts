@@ -52,7 +52,7 @@ class LocalUserStore {
     }
    
     setGameQualityValue(value: number): void {
-        window.localStorage.setItem(gameQualityKey, '' + value);
+        storage.setItem(gameQualityKey, '' + value);
     }
     getGameQualityValue(): number {
         return parseInt(storage.getItem(gameQualityKey) || '') || 60;
@@ -95,8 +95,6 @@ class LocalUserStore {
             return false;
         }
     }
-
-
 }
 
 export const localUserStore = new LocalUserStore();
