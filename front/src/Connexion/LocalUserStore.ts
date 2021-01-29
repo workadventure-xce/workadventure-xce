@@ -1,10 +1,14 @@
 import {LocalUser} from "./LocalUser";
 
-const characterLayersKey = 'characterLayers';
-const gameQualityKey = 'gameQuality';
-const videoQualityKey = 'videoQuality';
-const joystickKey = 'showJoystick';
-
+const playerNameKey =           'playerName';
+const selectedPlayerKey =       'selectedPlayer';
+const customCursorPositionKey = 'customCursorPosition';
+const characterLayersKey =      'characterLayers';
+const gameQualityKey =          'gameQuality';
+const videoQualityKey =         'videoQuality';
+const joystickKey =             'showJoystick';
+const audioPlayerVolumeKey =    'audioplayer_volume';
+const audioPlayerMuteKey =      'audioplayer_mute';
 
 const storage = window.localStorage
 
@@ -20,24 +24,24 @@ class LocalUserStore {
     }
 
     setName(name:string): void {
-        storage.setItem('playerName', name);
+        storage.setItem(playerNameKey, name);
     }
     getName(): string {
-        return storage.getItem('playerName') ?? '';
+        return storage.getItem(playerNameKey) ?? '';
     }
 
     setPlayerCharacterIndex(playerCharacterIndex: number): void {
-        storage.setItem('selectedPlayer', ''+playerCharacterIndex);
+        storage.setItem(selectedPlayerKey, ''+playerCharacterIndex);
     }
     getPlayerCharacterIndex(): number {
-        return parseInt(storage.getItem('selectedPlayer') || '');
+        return parseInt(storage.getItem(selectedPlayerKey) || '');
     }
 
     setCustomCursorPosition(activeRow:number, selectedLayers: number[]): void {
-        storage.setItem('customCursorPosition', JSON.stringify({activeRow, selectedLayers}));
+        storage.setItem(customCursorPositionKey, JSON.stringify({activeRow, selectedLayers}));
     }
     getCustomCursorPosition(): {activeRow:number, selectedLayers:number[]}|null  {
-        return JSON.parse(storage.getItem('customCursorPosition') || "null");
+        return JSON.parse(storage.getItem(customCursorPositionKey) || "null");
     }
 
     setCharacterLayers(layers: string[]): void {
@@ -46,21 +50,38 @@ class LocalUserStore {
     getCharacterLayers(): string[]|null {
         return JSON.parse(storage.getItem(characterLayersKey) || "null");
     }
-
+   
+    setGameQualityValue(value: number): void {
+        window.localStorage.setItem(gameQualityKey, '' + value);
+    }
     getGameQualityValue(): number {
         return parseInt(storage.getItem(gameQualityKey) || '') || 60;
     }
-    setGameQualityValue(value: number): void {
-        storage.setItem(gameQualityKey, '' + value);
-    }
 
-    getVideoQualityValue(): number {
-        return parseInt(storage.getItem(videoQualityKey) || '') || 20;
-    }
     setVideoQualityValue(value: number): void {
         storage.setItem(videoQualityKey, '' + value);
     }
+    getVideoQualityValue(): number {
+        return parseInt(storage.getItem(videoQualityKey) || '') || 20;
+    }
 
+    setAudioPlayerVolume(value: number): void {
+        storage.setItem(audioPlayerVolumeKey, '' + value);
+    }
+    getAudioPlayerVolume(): number {
+        return parseFloat(storage.getItem(audioPlayerVolumeKey) || '') || 1;
+    }
+
+    setAudioPlayerMuted(value: boolean): void {
+        storage.setItem(audioPlayerMuteKey, value.toString());
+    }
+    getAudioPlayerMuted(): boolean {
+        const value = storage.getItem(audioPlayerMuteKey);
+        return (value === 'true') ? true : false;
+
+    setJoystick(value: boolean): void {
+        storage.setItem(joystickKey, value.toString())
+    }
     getJoystick(): boolean {
         try {
             const joystickVisible = storage.getItem(joystickKey)
@@ -75,9 +96,7 @@ class LocalUserStore {
         }
     }
 
-    setJoystick(value: boolean): void {
-        storage.setItem(joystickKey, value.toString())
-    }
+
 }
 
 export const localUserStore = new LocalUserStore();
