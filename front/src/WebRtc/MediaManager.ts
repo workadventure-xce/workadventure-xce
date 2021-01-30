@@ -11,13 +11,19 @@ let valueVideo = 20;
 if(localValueVideo){
     valueVideo = parseInt(localValueVideo);
 }
-let videoConstraint: boolean|MediaTrackConstraints = {
+let videoConstraint: MediaTrackConstraints = {
     width: { min: 640, ideal: 1280, max: 1920 },
     height: { min: 400, ideal: 720 },
     frameRate: { ideal: valueVideo },
     facingMode: "user",
     resizeMode: 'crop-and-scale',
     aspectRatio: 1.777777778
+};
+const audioConstraint: MediaTrackConstraints = {
+    // TODO: Make these values configurable in the game settings menu and store them in local storage
+    autoGainControl: false,
+    echoCancellation: true,
+    noiseSuppression: false
 };
 
 export type UpdatedLocalStreamCallback = (media: MediaStream|null) => void;
@@ -41,7 +47,7 @@ export class MediaManager {
     webrtcInAudio: HTMLAudioElement;
     private webrtcOutAudio: HTMLAudioElement;
     constraintsMedia : MediaStreamConstraints = {
-        audio: true,
+        audio: audioConstraint,
         video: videoConstraint
     };
     updatedLocalStreamCallBacks : Set<UpdatedLocalStreamCallback> = new Set<UpdatedLocalStreamCallback>();
@@ -239,7 +245,7 @@ export class MediaManager {
     }
 
     public enableMicrophone() {
-        this.constraintsMedia.audio = true;
+        this.constraintsMedia.audio = audioConstraint;
 
         this.getCamera().then((stream) => {
             //TODO show error message tooltip upper of camera button
