@@ -43,11 +43,11 @@ services:
         TURN_USER: "$TURN_USER"
     labels:
       - "traefik.http.routers.front.rule=PathPrefix(`/`)"
-      - "traefik.http.routers.front.rule=Host(`wa.${BASE_DOMAIN}`)"
+      - "traefik.http.routers.front.rule=Host(`${BASE_DOMAIN}`)"
       - "traefik.http.routers.front.entryPoints=web"
       - "traefik.http.services.front.loadbalancer.server.port=8000"
       - "traefik.http.routers.front-ssl.rule=PathPrefix(`/`)"
-      - "traefik.http.routers.front-ssl.rule=Host(`wa.${BASE_DOMAIN}`)"
+      - "traefik.http.routers.front-ssl.rule=Host(`${BASE_DOMAIN}`)"
       - "traefik.http.routers.front-ssl.entryPoints=websecure"
       - "traefik.http.routers.front-ssl.tls=true"
       - "traefik.http.routers.front-ssl.service=front"
