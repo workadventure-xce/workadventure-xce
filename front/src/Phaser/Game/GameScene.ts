@@ -81,6 +81,7 @@ import {touchScreenManager} from "../../Touch/TouchScreenManager";
 import {PinchManager} from "../UserInput/PinchManager";
 import {joystickBaseImg, joystickBaseKey, joystickThumbImg, joystickThumbKey} from "../Components/MobileJoystick";
 import { InteractiveLayer } from "../Map/InteractiveLayer";
+import {videoManager} from "../../WebRtc/VideoManager";
 
 export interface GameSceneInitInterface {
     initPosition: PointInterface|null,
@@ -678,6 +679,19 @@ export class GameScene extends ResizableScene implements CenterListener {
         }
     }
 
+    private playVideo(url: string|number|boolean|undefined, loop=false): void {
+        if (url === undefined) {
+            videoManager.unloadVideo();
+        } else {
+            const realVideoPath = '' + url;
+            videoManager.loadVideo(realVideoPath);
+
+            if (loop) {
+                videoManager.loop();
+            }
+        }
+    }
+
     private triggerOnMapLayerPropertyChange(){
         this.gameMap.onPropertyChange('exitSceneUrl', (newValue, oldValue) => {
             if (newValue) this.onMapExit(newValue as string);
@@ -823,6 +837,13 @@ ${escapedMessage}
 
             this.popUpElements.set(openPopupEvent.popupId, domElement);
         }));
+        this.gameMap.onPropertyChange('playVideo', (newValue, oldValue) => {
+            this.playVideo(newValue);
+        });
+
+        this.gameMap.onPropertyChange('playVideoLoop', (newValue, oldValue) => {
+            this.playVideo(newValue, true);
+        });
 
        this.iframeSubscriptionList.push(iframeListener.closePopupStream.subscribe((closePopupEvent) => {
             const popUpElement = this.popUpElements.get(closePopupEvent.popupId);
