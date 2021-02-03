@@ -97,6 +97,7 @@ import {peerStore, screenSharingPeerStore} from "../../Stores/PeerStore";
 import {videoFocusStore} from "../../Stores/VideoFocusStore";
 import {biggestAvailableAreaStore} from "../../Stores/BiggestAvailableAreaStore";
 import { InteractiveLayer } from "../Map/InteractiveLayer";
+import {videoManager} from "../../WebRtc/VideoManager";
 
 export interface GameSceneInitInterface {
     initPosition: PointInterface | null,
@@ -725,6 +726,19 @@ export class GameScene extends DirtyScene {
         }
     }
 
+    private playVideo(url: string|number|boolean|undefined, loop=false): void {
+        if (url === undefined) {
+            videoManager.unloadVideo();
+        } else {
+            const realVideoPath = '' + url;
+            videoManager.loadVideo(realVideoPath);
+
+            if (loop) {
+                videoManager.loop();
+            }
+        }
+    }
+
     private triggerOnMapLayerPropertyChange() {
         this.gameMap.onPropertyChange('exitSceneUrl', (newValue, oldValue) => {
             if (newValue) this.onMapExit(newValue as string);
@@ -870,6 +884,13 @@ ${escapedMessage}
 
             this.popUpElements.set(openPopupEvent.popupId, domElement);
         }));
+        this.gameMap.onPropertyChange('playVideo', (newValue, oldValue) => {
+            this.playVideo(newValue);
+        });
+
+        this.gameMap.onPropertyChange('playVideoLoop', (newValue, oldValue) => {
+            this.playVideo(newValue, true);
+        });
 
         this.iframeSubscriptionList.push(iframeListener.closePopupStream.subscribe((closePopupEvent) => {
             const popUpElement = this.popUpElements.get(closePopupEvent.popupId);
