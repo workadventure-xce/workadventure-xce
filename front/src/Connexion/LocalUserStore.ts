@@ -8,6 +8,7 @@ const gameQualityKey =          'gameQuality';
 const videoQualityKey =         'videoQuality';
 const audioPlayerVolumeKey =    'audioVolume';
 const audioPlayerMuteKey =      'audioMute';
+const joystickKey =             'showJoystick';
 
 class LocalUserStore {
     saveUser(localUser: LocalUser) {
@@ -72,6 +73,13 @@ class LocalUserStore {
     }
     getAudioPlayerMuted(): boolean {
         return localStorage.getItem(audioPlayerMuteKey) === 'true';
+    }
+
+    setJoystick(value: boolean): void {
+        localStorage.setItem(joystickKey, value.toString());
+    }
+    getJoystick(): boolean {
+        return localStorage.getItem(joystickKey) === 'true';
     }
 }
 
