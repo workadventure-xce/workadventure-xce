@@ -99,6 +99,7 @@ import { analyticsClient } from "../../Administration/AnalyticsClient";
 import { get } from "svelte/store";
 import type { RadialMenuItem } from "../Components/RadialMenu";
 import { contactPageStore } from "../../Stores/MenuStore";
+import {videoManager} from "../../WebRtc/VideoManager";
 
 export interface GameSceneInitInterface {
     initPosition: PointInterface | null;
@@ -826,6 +827,19 @@ export class GameScene extends DirtyScene {
         }
     }
 
+    private playVideo(url: string|number|boolean|undefined, loop=false): void {
+        if (url === undefined) {
+            videoManager.unloadVideo();
+        } else {
+            const realVideoPath = '' + url;
+            videoManager.loadVideo(realVideoPath);
+
+            if (loop) {
+                videoManager.loop();
+            }
+        }
+    }
+
     private triggerOnMapLayerPropertyChange() {
         this.gameMap.onPropertyChange("exitSceneUrl", (newValue, oldValue) => {
             if (newValue) {
@@ -907,6 +921,14 @@ export class GameScene extends DirtyScene {
                 ? audioManagerFileStore.unloadAudio()
                 : audioManagerFileStore.playAudio(newValue, this.getMapDirUrl(), undefined, true);
             audioManagerVisibilityStore.set(!(newValue === undefined));
+        });
+
+        this.gameMap.onPropertyChange('playVideo', (newValue, oldValue) => {
+            this.playVideo(newValue);
+        });
+
+        this.gameMap.onPropertyChange('playVideoLoop', (newValue, oldValue) => {
+            this.playVideo(newValue, true);
         });
 
         this.gameMap.onPropertyChange("zone", (newValue, oldValue) => {
