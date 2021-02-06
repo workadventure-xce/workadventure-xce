@@ -14,7 +14,8 @@ import {
     JITSI_PRIVATE_MODE,
     POSITION_DELAY,
     RESOLUTION,
-    ZOOM_LEVEL
+    ZOOM_LEVEL,
+    MAX_PER_GROUP
 } from "../../Enum/EnvironmentVariable";
 import {
     ITiledMap,
@@ -1191,7 +1192,7 @@ export class GameScene extends ResizableScene implements CenterListener {
             this,
             Math.round(groupPositionMessage.position.x),
             Math.round(groupPositionMessage.position.y),
-            groupPositionMessage.groupSize === 4 ? 'circleSprite-red' : 'circleSprite-white'
+            groupPositionMessage.groupSize === MAX_PER_GROUP ? 'circleSprite-red' : 'circleSprite-white'
         );
         sprite.setDisplayOrigin(48, 48);
         this.add.existing(sprite);
