@@ -55,7 +55,7 @@ class LocalUserStore {
         storage.setItem(gameQualityKey, '' + value);
     }
     getGameQualityValue(): number {
-        return parseInt(storage.getItem(gameQualityKey) || '') || 60;
+        return parseInt(storage.getItem(gameQualityKey) || '') || 40;
     }
 
     setVideoQualityValue(value: number): void {
