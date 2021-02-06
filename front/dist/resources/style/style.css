@@ -64,8 +64,8 @@ body .message-info.warning{
     background: #d93025;
     border-radius: 48px;
     left: 5px;
-    bottom: 5px;
-    padding: 10px;
+    bottom: 20px;
+    padding: 5px;
     z-index: 2;
 }
 
