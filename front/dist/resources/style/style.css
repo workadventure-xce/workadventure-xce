@@ -587,43 +587,32 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .chat-mode {
-    display: flex;
+    display: inline-grid;
     width: 100%;
-
-    flex-wrap: wrap;
-    align-items: flex-start;
-
     padding: 1%;
+    align-items: flex-start;
 }
 
 .chat-mode > div {
     margin: 1%;
     max-height: 96%;
     transition: margin-left 0.2s, margin-right 0.2s, margin-bottom 0.2s, margin-top 0.2s;
-    cursor: url('/resources/logos/cursor_pointer.png'), pointer;
 }
 
-.chat-mode > div:hover {
-    margin: 0%;
-}
-.chat-mode.one-col > div {
-    flex-basis: 98%;
+.chat-mode.one-col {
+    grid-template-columns: auto;
 }
 
-.chat-mode.two-col > div {
-    flex-basis: 48%;
+.chat-mode.two-col {
+    grid-template-columns: auto auto;
 }
 
-.chat-mode.three-col > div {
-    flex-basis: 31.333333%;
+.chat-mode.three-col {
+    grid-template-columns: auto auto auto;
 }
 
-.chat-mode.four-col > div {
-    flex-basis: 23%;
-}
-
-.chat-mode > div:last-child {
-    flex-grow: 5;
+.chat-mode.four-col {
+    grid-template-columns: auto auto auto auto;
 }
 
 /*CONSOLE*/
