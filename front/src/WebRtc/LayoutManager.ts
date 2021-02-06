@@ -24,7 +24,6 @@ export interface CenterListener {
 }
 
 export const ON_ACTION_TRIGGER_BUTTON = 'onaction';
-
 export const TRIGGER_WEBSITE_PROPERTIES = 'openWebsiteTrigger';
 export const TRIGGER_JITSI_PROPERTIES = 'jitsiTrigger';
 
@@ -195,7 +194,7 @@ class LayoutManager {
         } else {
             HtmlUtils.getElementByIdOrFail<HTMLDivElement>('sidebar').style.display = 'none';
             HtmlUtils.getElementByIdOrFail<HTMLDivElement>('main-section').style.display = 'none';
-            HtmlUtils.getElementByIdOrFail<HTMLDivElement>('chat-mode').style.display = 'grid';
+            HtmlUtils.getElementByIdOrFail<HTMLDivElement>('chat-mode').style.display = 'inline-grid';
         }
 
         for (const div of this.importantDivs.values()) {
