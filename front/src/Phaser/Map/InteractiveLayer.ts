@@ -159,9 +159,7 @@ export class InteractiveLayer extends Container {
             const sprite = entity.sprite;
 
             if (sprite.anims.isPlaying) {
-                sprite.anims.play(entity.animation, false, sprite.anims.currentFrame.index);
-                // This line needs to be changed to the following if you update to the new phaser version 3.54.0
-                // sprite.anims.play({ key: entity.animation, startFrame: sprite.anims.currentFrame.index }, false);
+                sprite.anims.play({ key: entity.animation, startFrame: sprite.anims.currentFrame.index }, false);
             } else {
                 sprite.anims.play(entity.animation);
             }
