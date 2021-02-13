@@ -161,11 +161,6 @@ export class MenuScene extends Phaser.Scene {
             const adminSection = this.menuElement.getChildByID('adminConsoleSection') as HTMLElement;
             adminSection.hidden = false;
         }
-        //TODO bind with future metadata of card
-        //if (connectionManager.getConnexionType === GameConnexionTypes.anonymous){
-        const adminSection = this.menuElement.getChildByID('socialLinks') as HTMLElement;
-        adminSection.hidden = false;
-        //}
         this.tweens.add({
             targets: this.menuElement,
             x: openedSideMenuX,
@@ -306,9 +301,6 @@ export class MenuScene extends Phaser.Scene {
 
     private onMenuClick(event: MouseEvent) {
         const htmlMenuItem = (event?.target as HTMLInputElement);
-        if (htmlMenuItem.classList.contains('not-button')) {
-            return;
-        }
         event.preventDefault();
 
         if (htmlMenuItem.classList.contains("fromApi")) {
