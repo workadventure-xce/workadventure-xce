@@ -38,6 +38,8 @@ body .message-info.warning{
     position: relative;
     transition: all 0.2s ease;
     background-color: #00000099;
+    overflow: hidden;
+    border-radius: 15px;
 }
 .video-container i{
     position: absolute;
@@ -558,15 +560,6 @@ input[type=range]:focus::-ms-fill-upper {
 
 .sidebar > div:hover {
     margin: 0%;
-}
-
-/* Let's make sure videos are vertically centered if they need to be cropped */
-.media-container {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    overflow: hidden;
-    border-radius: 15px;
 }
 
 .chat-mode {
