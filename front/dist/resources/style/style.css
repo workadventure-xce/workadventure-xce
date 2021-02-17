@@ -1,6 +1,5 @@
 *{
     font-family: 'Open Sans', sans-serif;
-    cursor: url('/resources/logos/cursor_normal.png'), auto;
 }
 * a, button, select{
     cursor: url('/resources/logos/cursor_pointer.png'), pointer;
@@ -54,6 +53,7 @@ body .message-info.warning{
     color: white;
 }
 .video-container img.active{
+    margin-bottom: 15px;
     display: block;
 }
 .video-container img{
@@ -291,14 +291,6 @@ body {
         flex-direction: column;
     }
 
-    .sidebar > div {
-        max-height: 21%;
-    }
-
-    .sidebar > div:hover {
-        max-height: 25%;
-    }
-
     #cowebsite {
         right: 0;
         top: 0;
@@ -337,14 +329,6 @@ body {
     .sidebar {
         flex-direction: row;
         align-items: flex-end;
-    }
-
-    .sidebar > div {
-        max-width: 21%;
-    }
-
-    .sidebar > div:hover {
-        max-width: 25%;
     }
 
     #cowebsite {
@@ -561,9 +545,8 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .sidebar {
-    flex: 0 0 25%;
-    display: flex;
-    pointer-events: none;
+    display: inline-grid;
+    height: 80%;
 }
 
 .sidebar > div {
