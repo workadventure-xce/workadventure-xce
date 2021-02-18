@@ -27,6 +27,8 @@ export const ON_ACTION_TRIGGER_BUTTON = 'onaction';
 export const TRIGGER_WEBSITE_PROPERTIES = 'openWebsiteTrigger';
 export const TRIGGER_JITSI_PROPERTIES = 'jitsiTrigger';
 
+export const WEBSITE_MESSAGE_PROPERTIES = 'openWebsiteTriggerMessage';
+export const JITSI_MESSAGE_PROPERTIES = 'jitsiTriggerMessage';
 /**
  * This class is in charge of the video-conference layout.
  * It receives positioning requests for videos and does its best to place them on the screen depending on the active layout mode.
@@ -188,7 +190,7 @@ class LayoutManager {
         } else {
             HtmlUtils.getElementByIdOrFail<HTMLDivElement>('sidebar').style.display = 'none';
             HtmlUtils.getElementByIdOrFail<HTMLDivElement>('main-section').style.display = 'none';
-            HtmlUtils.getElementByIdOrFail<HTMLDivElement>('chat-mode').style.display = 'inline-grid';
+            HtmlUtils.getElementByIdOrFail<HTMLDivElement>('chat-mode').style.display = 'grid';
         }
 
         for (const div of this.importantDivs.values()) {
@@ -212,7 +214,7 @@ class LayoutManager {
      * Tries to find the biggest available box of remaining space (this is a space where we can center the character)
      */
     public findBiggestAvailableArray(): {xStart: number, yStart: number, xEnd: number, yEnd: number} {
-        const game = HtmlUtils.querySelectorOrFail<HTMLDivElement>('#game canvas');
+        const game = HtmlUtils.querySelectorOrFail<HTMLCanvasElement>('#game canvas');
         if (this.mode === LayoutMode.VideoChat) {
             const children = document.querySelectorAll<HTMLDivElement>('div.chat-mode > div');
             const htmlChildren = Array.from(children.values());

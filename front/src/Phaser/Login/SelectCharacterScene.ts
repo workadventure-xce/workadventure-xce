@@ -67,7 +67,7 @@ export class SelectCharacterScene extends AbstractCharacterScene {
         this.pressReturnField = new TextField(
             this,
             this.game.renderer.width / 2,
-            90 + 32 * Math.ceil( this.playerModels.length / this.nbCharactersPerRow) + 40,
+            90 + 32 * Math.ceil( this.playerModels.length / this.nbCharactersPerRow) + 60,
             'Touch here\n\n or \n\nPress enter to start');
         // For mobile purposes - we need a big enough touchable area.
         this.mobileTapRectangle = this.add
