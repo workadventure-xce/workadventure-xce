@@ -60,6 +60,8 @@ export class SelectCharacterScene extends AbstractCharacterScene {
         this.playerModels = loadAllDefaultModels(this.load);
         this.load.image(LoginTextures.customizeButton, 'resources/objects/customize.png');
         this.load.image(LoginTextures.customizeButtonSelected, 'resources/objects/customize_selected.png');
+
+        addLoader(this);
     }
 
     create() {
@@ -136,7 +138,7 @@ export class SelectCharacterScene extends AbstractCharacterScene {
 
         /*create user*/
         this.createCurrentPlayer();
-        
+
         const playerNumber = localUserStore.getPlayerCharacterIndex();
         if (playerNumber && playerNumber !== -1) {
             this.selectedRectangleXPos = playerNumber % this.nbCharactersPerRow;

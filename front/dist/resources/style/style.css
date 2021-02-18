@@ -90,13 +90,16 @@ body .message-info.warning{
     z-index: 2;
     transition: all .5s ease;
 }
+
 .video-container:hover button.report{
     width: 35px;
     padding: 10px;
 }
+
 .video-container button.report:hover {
     width: 150px;
 }
+
 .video-container button.report img{
     position: absolute;
     display: block;
@@ -332,9 +335,11 @@ body {
     .sidebar > div {
         max-height: 21%;
     }
+
     .sidebar > div:hover {
         max-height: 25%;
     }
+
     #cowebsite {
         right: 0;
         top: 0;
@@ -378,9 +383,11 @@ body {
     .sidebar > div {
         max-width: 21%;
     }
+
     .sidebar > div:hover {
         max-width: 25%;
     }
+
     #cowebsite {
         left: 0;
         bottom: 0;

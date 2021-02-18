@@ -1,19 +1,7 @@
 
-const IGNORED_KEYS = new Set([
-    'Esc',
-    'Escape',
-    'Alt',
-    'Meta',
-    'Control',
-    'Ctrl',
-    'Space',
-    'Backspace'
-])
-
 export class TextInput extends Phaser.GameObjects.BitmapText {
     private minUnderLineLength = 4;
     private underLine: Phaser.GameObjects.Text;
-    private domInput = document.createElement('input');
 
     constructor(scene: Phaser.Scene, x: number, y: number, maxLength: number, text: string, onChange: (text: string) => void) {
         super(scene, x, y, 'main_font', text, 32);
@@ -24,39 +12,17 @@ export class TextInput extends Phaser.GameObjects.BitmapText {
         this.underLine.setOrigin(0.5)
 
 
-        const { domInput } = this;
-        document.body.append(domInput);
-        domInput.maxLength = maxLength;
-        domInput.style.opacity = "0";
-        if (text) {
-            domInput.value = text;
-        }
-        domInput.focus();
-
-        domInput.addEventListener('keydown', event => {
-            const { key } = event
-            if (IGNORED_KEYS.has(key)) {
-                return
+        this.scene.input.keyboard.on('keydown', (event: KeyboardEvent) => {
+            if (event.keyCode === 8 && this.text.length > 0) {
+                this.deleteLetter();
+            } else if ((event.keyCode === 32 || (event.keyCode >= 48 && event.keyCode <= 90)) && this.text.length < maxLength) {
+                this.addLetter(event.key);
             }
-
-            const match = /[a-zA-Z0-9:.!&?()+-]/.exec(key)
-            if (!match) {
-                event.preventDefault()
-            }
-        })
-
-
-        domInput.addEventListener('input', (event) => {
-            if (event.defaultPrevented) {
-                return
-            }
-            const { value } = domInput
-            this.text = value;
             this.underLine.text = this.getUnderLineBody(this.text.length);
             onChange(this.text);
-        })
+        });
     }
-
+    
     private getUnderLineBody(textLength:number): string {
         if (textLength < this.minUnderLineLength) textLength = this.minUnderLineLength;
         let text = '_______';
@@ -64,6 +30,15 @@ export class TextInput extends Phaser.GameObjects.BitmapText {
             text += '__'
         }
         return text;
+    }
+
+    private deleteLetter() {
+        this.text = this.text.substr(0, this.text.length - 1);
+    }
+
+
+    private addLetter(letter: string) {
+        this.text += letter;
     }
 
     getText(): string {
@@ -80,14 +55,5 @@ export class TextInput extends Phaser.GameObjects.BitmapText {
         super.setY(y);
         this.underLine.y = y+1;
         return this;
-    }
-
-    focus() {
-        this.domInput.focus();
-    }
-
-    destroy(): void {
-        super.destroy();
-        this.domInput.remove();
     }
 }
