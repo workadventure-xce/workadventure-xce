@@ -1,7 +1,6 @@
 import {GameScene} from "../Game/GameScene";
 import {PointInterface} from "../../Connexion/ConnexionModels";
 import {Character} from "../Entity/Character";
-import {Sprite} from "./Sprite";
 
 /**
  * Class representing the sprite of a remote player (a player that plays on another computer)

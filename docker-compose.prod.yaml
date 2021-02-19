@@ -54,8 +54,10 @@ services:
       - "traefik.http.routers.front-ssl.tls=true"
       - "traefik.http.routers.front-ssl.service=front"
       - "traefik.http.routers.front-ssl.tls.certresolver=myhttpchallenge"
-        #      - "traefik.http.routers.front.middlewares=auth"
-        #      - "traefik.http.middlewares.auth.basicauth.users=$TRAEFIK_BASICAUTH"
+      - "traefik.http.routers.front.middlewares=auth"
+      - "traefik.http.routers.front-ssl.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_BASICAUTH}"
+      - "traefik.http.middlewares.auth.basicauth.headerField=X-WebAuth-User"
 
   back:
     restart: unless-stopped

@@ -1,30 +1,27 @@
 export class HtmlUtils {
     public static getElementByIdOrFail<T extends HTMLElement>(id: string): T {
         const elem = document.getElementById(id);
-        if (elem === null) {
-            throw new Error("Cannot find HTML element with id '"+id+"'");
+        if (HtmlUtils.isHtmlElement<T>(elem)) {
+           return elem;
         }
-        // FIXME: does not check the type of the returned type
-        return elem as T;
+        throw new Error("Cannot find HTML element with id '"+id+"'");
     }
 
     public static querySelectorOrFail<T extends HTMLElement>(selector: string): T {
-        const elem = document.querySelector(selector);
-        if (elem === null) {
-            throw new Error("Cannot find HTML element with selector '"+selector+"'");
+        const elem = document.querySelector<T>(selector);
+        if (HtmlUtils.isHtmlElement<T>(elem)) {
+            return elem;
         }
-        // FIXME: does not check the type of the returned type
-        return elem as T;
+        throw new Error("Cannot find HTML element with selector '"+selector+"'");
     }
 
     public static removeElementByIdOrFail<T extends HTMLElement>(id: string): T {
         const elem = document.getElementById(id);
-        if (elem === null) {
-            throw new Error("Cannot find HTML element with id '"+id+"'");
+        if (HtmlUtils.isHtmlElement<T>(elem)) {
+            elem.remove();
+            return elem;
         }
-        // FIXME: does not check the type of the returned type
-        elem.remove();
-        return elem as T;
+        throw new Error("Cannot find HTML element with id '"+id+"'");
     }
 
     private static escapeHtml(html: string): string {
@@ -39,6 +36,10 @@ export class HtmlUtils {
         text = HtmlUtils.escapeHtml(text);
         return text.replace(urlRegex, (url: string) => {
             return '<a href="' + url + '" target="_blank" style=":visited {color: white}">' + url + '</a>';
-        })
+        });
+    }
+
+    private static isHtmlElement<T extends HTMLElement>(elem: HTMLElement | null): elem is T {
+        return elem !== null;
     }
 }

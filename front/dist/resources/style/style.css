@@ -35,11 +35,11 @@ body .message-info.warning{
     background: #ffa500d6;
 }
 .video-container{
+    pointer-events: all;
     position: relative;
     transition: all 0.2s ease;
     background-color: #00000099;
-    overflow: hidden;
-    border-radius: 15px;
+    cursor: url('/resources/logos/cursor_pointer.png'), pointer;
 }
 .video-container i{
     position: absolute;
@@ -54,26 +54,72 @@ body .message-info.warning{
     font-size: 28px;
     color: white;
 }
-.video-container img.active{
-    margin-bottom: 15px;
-    display: block;
-}
+
 .video-container img{
     position: absolute;
     display: none;
     width: 15px;
     height: 15px;
-    background: #d93025;
-    border-radius: 48px;
     left: 5px;
     bottom: 20px;
     padding: 5px;
     z-index: 2;
 }
+.video-container img.block-logo {
+    left: 30%;
+    bottom: 15%;
+    width: 150px;
+    height: 150px;
+}
 
-.video-container img.report{
+.video-container button.report{
+    display: block;
+    cursor: url('/resources/logos/cursor_pointer.png'), pointer;
+    background: none;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    background-color: black;
+    border-radius: 15px;
+    position: absolute;
+    width: 0px;
+    height: 35px;
     right: 5px;
-    left: auto;
+    bottom: 5px;
+    padding: 0px;
+    overflow: hidden;
+    z-index: 2;
+    transition: all .5s ease;
+}
+
+.video-container:hover button.report{
+    width: 35px;
+    padding: 10px;
+}
+
+.video-container button.report:hover {
+    width: 150px;
+}
+
+.video-container button.report img{
+    position: absolute;
+    display: block;
+    bottom: 5px;
+    left: 5px;
+    margin: 0;
+    padding: 0;
+    cursor: url('/resources/logos/cursor_pointer.png'), pointer;
+}
+.video-container button.report span{
+    position: absolute;
+    bottom: 8px;
+    left: 36px;
+    color: white;
+    font-size: 16px;
+    cursor: url('/resources/logos/cursor_pointer.png'), pointer;
+}
+.video-container img.active {
+    display: block !important;
+    margin-bottom: 15px;
 }
 
 .video-container video{
@@ -113,7 +159,8 @@ video#myCamVideo{
     width: 450px;
     height: 150px;
 }
-/* override copyright btn*/
+
+
 .btn-cam-action#btn-copy-action {
     position: absolute;
     bottom: 0px;
@@ -170,10 +217,7 @@ video#myCamVideo{
     right: 44px;
     opacity: 1;
 }
-/*.btn-call{
-    transition: all .1s;
-    left: 0px;
-}*/
+
 .btn-cam-action div img{
     height: 22px;
     width: 30px;
@@ -293,6 +337,14 @@ body {
         flex-direction: column;
     }
 
+    .sidebar > div {
+        max-height: 21%;
+    }
+
+    .sidebar > div:hover {
+        max-height: 25%;
+    }
+
     #cowebsite {
         right: 0;
         top: 0;
@@ -333,6 +385,14 @@ body {
         align-items: flex-end;
     }
 
+    .sidebar > div {
+        max-width: 21%;
+    }
+
+    .sidebar > div:hover {
+        max-width: 25%;
+    }
+
     #cowebsite {
         left: 0;
         bottom: 0;
@@ -356,6 +416,7 @@ body {
 #cowebsite {
     position: fixed;
     transition: transform 0.5s;
+    background-color: white;
 }
 #cowebsite.loading {
     background-color: gray;
@@ -547,8 +608,8 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .sidebar {
-    display: inline-grid;
-    height: 80%;
+    flex: 0 0 25%;
+    display: flex;
 }
 
 .sidebar > div {
@@ -562,8 +623,18 @@ input[type=range]:focus::-ms-fill-upper {
     margin: 0%;
 }
 
+/* Let's make sure videos are vertically centered if they need to be cropped */
+.media-container {
+    pointer-events: all;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
 .chat-mode {
-    display: inline-grid;
+    display: grid;
     width: 100%;
     padding: 1%;
     align-items: flex-start;
@@ -573,22 +644,26 @@ input[type=range]:focus::-ms-fill-upper {
     margin: 1%;
     max-height: 96%;
     transition: margin-left 0.2s, margin-right 0.2s, margin-bottom 0.2s, margin-top 0.2s;
+    cursor: url('/resources/logos/cursor_pointer.png'), pointer;
 }
 
+.chat-mode > div:hover {
+    margin: 0%;
+}
 .chat-mode.one-col {
-    grid-template-columns: auto;
+    grid-template-columns: repeat(1, 1fr);
 }
 
 .chat-mode.two-col {
-    grid-template-columns: auto auto;
+    grid-template-columns: repeat(2, 1fr);
 }
 
 .chat-mode.three-col {
-    grid-template-columns: auto auto auto;
+    grid-template-columns: repeat(3, 1fr);
 }
 
 .chat-mode.four-col {
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: repeat(4, 1fr);
 }
 
 /*CONSOLE*/
@@ -1063,7 +1138,7 @@ div.modal-report-user{
     white-space: pre-wrap;
     word-wrap: break-word;
 }
-.discussion .messages .message p.a{
+.discussion .messages .message p a{
     color: white;
 }
 

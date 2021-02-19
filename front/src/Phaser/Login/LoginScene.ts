@@ -2,7 +2,6 @@ import {gameManager} from "../Game/GameManager";
 import {TextField} from "../Components/TextField";
 import {TextInput} from "../Components/TextInput";
 import Image = Phaser.GameObjects.Image;
-import {cypressAsserter} from "../../Cypress/CypressAsserter";
 import {SelectCharacterSceneName} from "./SelectCharacterScene";
 import {ResizableScene} from "./ResizableScene";
 import { localUserStore } from "../../Connexion/LocalUserStore";
@@ -23,7 +22,7 @@ export class LoginScene extends ResizableScene {
     private logo!: Image;
     private name: string = '';
 
-	private mobileTapRectangle!: Phaser.GameObjects.Rectangle;
+    private mobileTapRectangle!: Phaser.GameObjects.Rectangle;
     constructor() {
         super({
             key: LoginSceneName
@@ -32,18 +31,16 @@ export class LoginScene extends ResizableScene {
     }
 
     preload() {
-        cypressAsserter.preloadStarted();
         //this.load.image(LoginTextures.playButton, "resources/objects/play_button.png");
         this.load.image(LoginTextures.icon, "resources/logos/tcm_full.png");
         // Note: arcade.png from the Phaser 3 examples at: https://github.com/photonstorm/phaser3-examples/tree/master/public/assets/fonts/bitmap
         this.load.bitmapFont(LoginTextures.mainFont, 'resources/fonts/arcade.png', 'resources/fonts/arcade.xml');
-        cypressAsserter.preloadFinished();
     }
 
     create() {
-        cypressAsserter.initStarted();
 
-        this.nameInput = new TextInput(this, this.game.renderer.width / 2, 70, 10, this.name,(text: string) => {
+        this.textField = new TextField(this, this.game.renderer.width / 2, 50, 'Enter your name:');
+        this.nameInput = new TextInput(this, this.game.renderer.width / 2, 70, 12, this.name,(text: string) => {
             this.name = text;
             localUserStore.setName(text);
         })
@@ -82,7 +79,6 @@ export class LoginScene extends ResizableScene {
             this.login(this.name);
         });
 
-        cypressAsserter.initFinished();
     }
 
     update(time: number, delta: number): void {
