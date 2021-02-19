@@ -634,7 +634,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .chat-mode {
-    display: inline-grid;
+    display: grid;
     width: 100%;
     padding: 1%;
     align-items: flex-start;
@@ -651,19 +651,19 @@ input[type=range]:focus::-ms-fill-upper {
     margin: 0%;
 }
 .chat-mode.one-col {
-    grid-template-columns: auto;
+    grid-template-columns: repeat(1, 1fr);
 }
 
 .chat-mode.two-col {
-    grid-template-columns: auto auto;
+    grid-template-columns: repeat(2, 1fr);
 }
 
 .chat-mode.three-col {
-    grid-template-columns: auto auto auto;
+    grid-template-columns: repeat(3, 1fr);
 }
 
 .chat-mode.four-col {
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: repeat(4, 1fr);
 }
 
 /*CONSOLE*/

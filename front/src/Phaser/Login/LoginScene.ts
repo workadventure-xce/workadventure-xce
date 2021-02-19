@@ -22,7 +22,7 @@ export class LoginScene extends ResizableScene {
     private logo!: Image;
     private name: string = '';
 
-	private mobileTapRectangle!: Phaser.GameObjects.Rectangle;
+    private mobileTapRectangle!: Phaser.GameObjects.Rectangle;
     constructor() {
         super({
             key: LoginSceneName
@@ -40,7 +40,7 @@ export class LoginScene extends ResizableScene {
     create() {
 
         this.textField = new TextField(this, this.game.renderer.width / 2, 50, 'Enter your name:');
-        this.nameInput = new TextInput(this, this.game.renderer.width / 2, 70, 10, this.name,(text: string) => {
+        this.nameInput = new TextInput(this, this.game.renderer.width / 2, 70, 12, this.name,(text: string) => {
             this.name = text;
             localUserStore.setName(text);
         })
