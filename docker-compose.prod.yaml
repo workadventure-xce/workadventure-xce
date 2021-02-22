@@ -10,6 +10,7 @@ services:
       - --entrypoints.web.http.redirections.entryPoint.scheme=https
       - --entrypoints.web.http.redirections.entrypoint.permanent=true
       - --entryPoints.websecure.address=:443
+      - --providers.file.directory=/configs/
       - --certificatesresolvers.myhttpchallenge.acme.tlschallenge=true
       - --certificatesresolvers.myhttpchallenge.acme.email=$ACME_EMAIL
       - --certificatesresolvers.myhttpchallenge.acme.storage=/letsencrypt/acme.json
@@ -22,6 +23,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./ssl/:/letsencrypt/
+      - ./traefik_tls.yaml:/configs/traefik_tls.yml
 
   front:
     restart: unless-stopped
