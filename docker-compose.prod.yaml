@@ -87,10 +87,10 @@ services:
       JITSI_URL: $JITSI_URL
       JITSI_ISS: $JITSI_ISS
     labels:
-      - "traefik.http.routers.pusher.rule=Path(`/room`, `/verify`, `/register`, `/anonymLogin`)"
+      - "traefik.http.routers.pusher.rule=Path(`/room`, `/verify`, `/register`, `/anonymLogin`, `/metrics`)"
       - "traefik.http.routers.pusher.entryPoints=web"
       - "traefik.http.services.pusher.loadbalancer.server.port=8080"
-      - "traefik.http.routers.pusher-ssl.rule=Path(`/room`, `/verify`, `/register`, `/anonymLogin`)"
+      - "traefik.http.routers.pusher-ssl.rule=Path(`/room`, `/verify`, `/register`, `/anonymLogin`, `/metrics`)"
       - "traefik.http.routers.pusher-ssl.entryPoints=websecure"
       - "traefik.http.routers.pusher-ssl.tls=true"
       - "traefik.http.routers.pusher-ssl.service=pusher"
