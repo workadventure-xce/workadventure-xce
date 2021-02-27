@@ -342,6 +342,31 @@ export class GameScene extends ResizableScene implements CenterListener {
         }
     }
 
+    // helper for recursive group layer support
+    private createHelper(layers: ITiledMapLayer[], depth: integer, prefix: string): integer {
+        for(const layer of layers) {
+            if(layer.type === 'tilelayer') {
+                this.addLayer(this.Map.createLayer(prefix + layer.name, this.Terrains, 0, 0).setDepth(depth));
+
+                const exitSceneUrl = this.getExitSceneUrl(layer);
+                if(exitSceneUrl !== undefined) {
+                    this.loadNextGame(exitSceneUrl);
+                }
+                const exitUrl = this.getExitUrl(layer);
+                if(exitUrl !== undefined) {
+                    this.loadNextGame(exitUrl);
+                }
+            }
+            if(layer.type === 'group') {
+                this.createHelper(layer.layers, depth, prefix + layer.name + '/');
+            }
+            if(layer.type === 'objectgroup' && layer.name === 'floorLayer') {
+                depth = 10000;
+            }
+        }
+        return depth;
+    }
+
     //hook create scene
     create(): void {
         gameManager.gameSceneIsCreated(this);
@@ -371,25 +396,8 @@ export class GameScene extends ResizableScene implements CenterListener {
 
         //add layer on map
         this.Layers = new Array<Phaser.Tilemaps.TilemapLayer>();
-        let depth = -2;
-        for (const layer of this.mapFile.layers) {
-            if (layer.type === 'tilelayer') {
-                this.addLayer(this.Map.createLayer(layer.name, this.Terrains, 0, 0).setDepth(depth));
 
-                const exitSceneUrl = this.getExitSceneUrl(layer);
-                if (exitSceneUrl !== undefined) {
-                    this.loadNextGame(exitSceneUrl);
-                }
-                const exitUrl = this.getExitUrl(layer);
-                if (exitUrl !== undefined) {
-                    this.loadNextGame(exitUrl);
-                }
-            }
-            if (layer.type === 'objectgroup' && layer.name === 'floorLayer') {
-                depth = 10000;
-            }
-        }
-        if (depth === -2) {
+        if (this.createHelper(this.mapFile.layers, -2, '') === -2) {
             throw new Error('Your map MUST contain a layer of type "objectgroup" whose name is "floorLayer" that represents the layer characters are drawn at.');
         }
 
@@ -963,14 +971,20 @@ ${escapedMessage}
         }
     }
 
-    private initPositionFromLayerName(layerName: string) {
-        for (const layer of this.mapFile.layers) {
+    private initPositionFromLayerNameHelper(layerName: string, layers : ITiledMapLayer[]) {
+        for (const layer of layers) {
             if (layerName === layer.name && layer.type === 'tilelayer' && (layerName === defaultStartLayerName || this.isStartLayer(layer))) {
                 const startPosition = this.startUser(layer);
                 this.startX = startPosition.x + this.mapFile.tilewidth/2;
                 this.startY = startPosition.y + this.mapFile.tileheight/2;
+            } else if (layer.type === 'group') {
+                this.initPositionFromLayerNameHelper(layerName, layer.layers);
             }
         }
+    }
+
+    private initPositionFromLayerName(layerName: string) {
+        this.initPositionFromLayerNameHelper(layerName, this.mapFile.layers);
     }
 
     private getExitUrl(layer: ITiledMapLayer): string|undefined {
