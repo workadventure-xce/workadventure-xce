@@ -1144,10 +1144,10 @@ div.action p.action-body{
     padding: 10px;
     background-color: #2d2d2dba;
     color: #fff;
-    font-size: 12px;
+    font-size: 20px;
     text-align: center;
-    max-width: 150px;
-    margin-left: calc(50% - 75px);
+    max-width: 200px;
+    margin-left: calc(50% - 100px);
     border-radius: 15px;
 }
 @keyframes mymove {
