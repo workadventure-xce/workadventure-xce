@@ -766,7 +766,7 @@ export class GameScene extends ResizableScene implements CenterListener {
                 if(jitsiTriggerValue && jitsiTriggerValue === ON_ACTION_TRIGGER_BUTTON) {
                     let message = allProps.get(JITSI_MESSAGE_PROPERTIES);
                     if (message === undefined) {
-                        message = 'Press SPACE or touch here to enter Jitsi Meet room';
+                        message = 'Press SPACE or touch here to enter video conference';
                     }
                     layoutManager.addActionButton('jitsiRoom', message.toString(), () => {
                         openJitsiRoomFunction();
