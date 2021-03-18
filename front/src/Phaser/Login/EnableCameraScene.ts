@@ -55,6 +55,21 @@ export class EnableCameraScene extends Phaser.Scene {
     }
 
     create() {
+        this.textField = new TextField(this, this.game.renderer.width / 2, 20, 'Turn on your camera and microphone');
+
+        this.pressReturnField = new TextField(this, this.game.renderer.width / 2, this.game.renderer.height - 30, 'Touch here\n\n or \n\nPress enter to start');
+        // For mobile purposes - we need a big enough touchable area.
+        this.mobileTapRectangle = this.add
+          .rectangle(
+            this.game.renderer.width / 2,
+            this.game.renderer.height - 30,
+            200,
+            50,
+          )
+          .setInteractive()
+          .on("pointerdown", () => {
+            this.login();
+          });
         this.cameraNameField = new TextField(this, this.game.renderer.width / 2, this.game.renderer.height - 60, '');
 
         this.microphoneNameField = new TextField(this, this.game.renderer.width / 2, this.game.renderer.height - 40, '');
@@ -87,22 +102,6 @@ export class EnableCameraScene extends Phaser.Scene {
 
         this.logo = new Image(this, this.game.renderer.width - 30, this.game.renderer.height - 20, LoginTextures.icon);
         this.add.existing(this.logo);
-
-        this.textField = new TextField(this, this.game.renderer.width / 2, 20, 'Turn on your camera and microphone');
-
-        this.pressReturnField = new TextField(this, this.game.renderer.width / 2, this.game.renderer.height - 30, 'Touch here\n\n or \n\nPress enter to start');
-        // For mobile purposes - we need a big enough touchable area.
-        this.mobileTapRectangle = this.add
-          .rectangle(
-            this.game.renderer.width / 2,
-            this.game.renderer.height - 30,
-            200,
-            50,
-          )
-          .setInteractive()
-          .on("pointerdown", () => {
-            this.login();
-          });
 
         this.input.keyboard.on('keyup-ENTER', () => {
             this.login();

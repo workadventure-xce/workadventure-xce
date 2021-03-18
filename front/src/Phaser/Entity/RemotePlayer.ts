@@ -22,6 +22,11 @@ export class RemotePlayer extends Character {
 
         //set data
         this.userId = userId;
+        
+        //todo: implement on click action
+        /*this.playerName.setInteractive();
+        this.playerName.on('pointerup', () => {
+        });*/
     }
 
     updatePosition(position: PointInterface): void {

@@ -86,7 +86,7 @@ const config: GameConfig = {
     },
     render: {
         pixelArt: true,
-        roundPixels: true,
+        roundPixels: false,
         antialias: false
     },
     physics: {

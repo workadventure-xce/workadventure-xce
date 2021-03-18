@@ -74,6 +74,7 @@ export class FileController extends BaseController {
                                     buffer: Buffer.concat(chunks),
                                     expireDate
                                 });
+                                console.log('DONE READING FILE', fieldname)
                             })();
                         }
                     });
@@ -112,6 +113,7 @@ export class FileController extends BaseController {
 
             const file = this.uploadedFileBuffers.get(id);
             if (file === undefined) {
+                console.warn('FILE NOT FOUND');
                 res.writeStatus("404 Not found");
                 this.addCorsHeaders(res);
                 res.end("Cannot find file");

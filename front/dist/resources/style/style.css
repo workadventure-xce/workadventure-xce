@@ -58,11 +58,11 @@ body .message-info.warning{
 .video-container img{
     position: absolute;
     display: none;
-    width: 15px;
-    height: 15px;
+    width: 25px;
+    height: 25px;
     left: 5px;
-    bottom: 20px;
-    padding: 5px;
+    bottom: 5px;
+    padding: 10px;
     z-index: 2;
 }
 .video-container img.block-logo {
@@ -119,7 +119,6 @@ body .message-info.warning{
 }
 .video-container img.active {
     display: block !important;
-    margin-bottom: 15px;
 }
 
 .video-container video{
@@ -439,10 +438,14 @@ body {
     justify-content: center;
 }
 
+.audioplayer > div {
+    padding-right: 1.2rem;
+}
+
 #audioplayerctrl {
     position: fixed;
     top: 0;
-    right: 50%;
+    right: calc(50% - 120px);
     padding: 0.3rem 0.5rem;
     color: white;
     transition: transform 0.5s;
@@ -636,8 +639,10 @@ input[type=range]:focus::-ms-fill-upper {
 .chat-mode {
     display: grid;
     width: 100%;
-    padding: 1%;
+
     align-items: flex-start;
+
+    padding: 1%;
 }
 
 .chat-mode > div {
@@ -695,7 +700,7 @@ input[type=range]:focus::-ms-fill-upper {
     position: relative;
     padding: 20px;
     margin: 20px;
-    overflow: scroll;
+    overflow: auto;
     max-height: 400px;
 }
 

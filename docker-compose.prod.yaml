@@ -20,10 +20,12 @@ services:
     depends_on:
       - back
       - front
+      - pusher
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./ssl/:/letsencrypt/
       - ./traefik_tls.yaml:/configs/traefik_tls.yml
+      - ./.htpasswd:/.htpasswd  
 
   front:
     restart: unless-stopped
@@ -33,8 +35,9 @@ services:
       args:
         BASE_DOMAIN: ${BASE_DOMAIN:-workadventure.localhost}
 
-        # This should fall back to window.location.host
+        # These should fall back to window.location.host
         API_URL: ""
+        UPLOADER_URL: ""
 
         START_ROOM_URL: "$START_ROOM_URL"
         JITSI_PRIVATE_MODE: "$JITSI_PRIVATE_MODE"
@@ -56,9 +59,10 @@ services:
       - "traefik.http.routers.front-ssl.tls=true"
       - "traefik.http.routers.front-ssl.service=front"
       - "traefik.http.routers.front-ssl.tls.certresolver=myhttpchallenge"
-#      - "traefik.http.routers.front.middlewares=auth"
+      - "traefik.http.routers.front.middlewares=auth"
 #      - "traefik.http.routers.front-ssl.middlewares=auth"
 #      - "traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_BASICAUTH}"
+#      - "traefik.http.middlewares.auth.basicauth.usersFile=${TRAEFIK_BASICAUTHFILE}"
 #      - "traefik.http.middlewares.auth.basicauth.headerField=X-WebAuth-User"
 
   back:
@@ -70,6 +74,7 @@ services:
       SECRET_KEY: yourSecretKey
       SECRET_JITSI_KEY: "$SECRET_JITSI_KEY"
       ADMIN_API_TOKEN: "$ADMIN_API_TOKEN"
+      ADMIN_API_URL: "$ADMIN_API_URL"
       JITSI_URL: $JITSI_URL
       JITSI_ISS: $JITSI_ISS
       MAX_PER_GROUP: $MAX_PER_GROUP
@@ -83,15 +88,17 @@ services:
       SECRET_KEY: yourSecretKey
       SECRET_JITSI_KEY: "$SECRET_JITSI_KEY"
       ADMIN_API_TOKEN: "$ADMIN_API_TOKEN"
+      ADMIN_API_URL: "$ADMIN_API_URL"
       API_URL: back:50051
       JITSI_URL: $JITSI_URL
       JITSI_ISS: $JITSI_ISS
     labels:
-      - "traefik.http.routers.pusher.rule=Path(`/room`, `/verify`, `/register`, `/anonymLogin`, `/metrics`)"
+      - "traefik.http.routers.pusher.rule=Path(`/admin/rooms`, `/room`, `/verify`, `/register`, `/anonymLogin`, `/metrics`, `/dump`, `/map`)"
       - "traefik.http.routers.pusher.entryPoints=web"
       - "traefik.http.services.pusher.loadbalancer.server.port=8080"
-      - "traefik.http.routers.pusher-ssl.rule=Path(`/room`, `/verify`, `/register`, `/anonymLogin`, `/metrics`)"
+      - "traefik.http.routers.pusher-ssl.rule=Path(`/admin/rooms`, `/room`, `/verify`, `/register`, `/anonymLogin`, `/metrics`, `/dump`, `/map`)"
       - "traefik.http.routers.pusher-ssl.entryPoints=websecure"
       - "traefik.http.routers.pusher-ssl.tls=true"
       - "traefik.http.routers.pusher-ssl.service=pusher"
       - "traefik.http.routers.pusher-ssl.tls.certresolver=myhttpchallenge"
+

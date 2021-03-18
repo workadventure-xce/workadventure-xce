@@ -3,6 +3,9 @@ import {UserInputManager} from "../Phaser/UserInput/UserInputManager";
 import {RoomConnection} from "../Connexion/RoomConnection";
 import {PlayGlobalMessageInterface} from "../Connexion/ConnexionModels";
 import {ADMIN_URL} from "../Enum/EnvironmentVariable";
+import {AdminMessageEventTypes} from "../Connexion/AdminMessagesService";
+
+const Quill = require("quill");
 
 export const CLASS_CONSOLE_MESSAGE = 'main-console';
 export const INPUT_CONSOLE_MESSAGE = 'input-send-text';
@@ -10,13 +13,16 @@ export const UPLOAD_CONSOLE_MESSAGE = 'input-upload-music';
 export const INPUT_TYPE_CONSOLE = 'input-type';
 export const VIDEO_QUALITY_SELECT = 'select-video-quality';
 
-export const AUDIO_TYPE = 'audio';
-export const MESSAGE_TYPE = 'message';
+export const AUDIO_TYPE = AdminMessageEventTypes.audio;
+export const MESSAGE_TYPE = AdminMessageEventTypes.admin;
 
 interface EventTargetFiles extends EventTarget {
     files: Array<File>;
 }
 
+/**
+ * @deprecated
+ */
 export class ConsoleGlobalMessageManager {
 
     private readonly divMainConsole: HTMLDivElement;
@@ -48,7 +54,7 @@ export class ConsoleGlobalMessageManager {
         //this.buttonAdminMainConsole = document.createElement('img');
         this.userInputManager = userInputManager;
         this.initialise();
-        
+
     }
 
     initialise() {
@@ -140,7 +146,7 @@ export class ConsoleGlobalMessageManager {
         const div = document.createElement('div');
         div.id = INPUT_CONSOLE_MESSAGE
         const buttonSend = document.createElement('button');
-        buttonSend.innerText = 'Envoyer';
+        buttonSend.innerText = 'Send';
         buttonSend.classList.add('btn');
         buttonSend.addEventListener('click', (event: MouseEvent) => {
             this.sendMessage();
@@ -160,8 +166,6 @@ export class ConsoleGlobalMessageManager {
         (async () => {
             // Start loading CSS
             const cssPromise = ConsoleGlobalMessageManager.loadCss();
-            // Import quill
-            const Quill:any = await import("quill"); // eslint-disable-line @typescript-eslint/no-explicit-any
             // Wait for CSS to be loaded
             await cssPromise;
 
@@ -242,7 +246,7 @@ export class ConsoleGlobalMessageManager {
         div.appendChild(input);
 
         const buttonSend = document.createElement('button');
-        buttonSend.innerText = 'Envoyer';
+        buttonSend.innerText = 'Send';
         buttonSend.classList.add('btn');
         buttonSend.addEventListener('click', (event: MouseEvent) => {
             this.sendMessage();
@@ -371,23 +375,6 @@ export class ConsoleGlobalMessageManager {
         this.divMessageConsole.classList.remove('active');
         this.buttonSendMainConsole.classList.remove('active');
     }
-
-    /*activeSettingConsole(){
-        this.activeSetting = true;
-        if(this.activeMessage){
-            this.disabledSettingConsole();
-        }
-        this.active();
-        this.divSettingConsole.classList.add('active');
-        //this.buttonSettingsMainConsole.classList.add('active');
-    }
-
-    disabledSettingConsole(){
-        this.activeSetting = false;
-        this.disabled();
-        this.divSettingConsole.classList.remove('active');
-        //this.buttonSettingsMainConsole.classList.remove('active');
-    }*/
 
     private getSectionId(id: string) : string {
         return `section-${id}`;

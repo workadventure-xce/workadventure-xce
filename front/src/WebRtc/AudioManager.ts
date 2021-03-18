@@ -10,6 +10,8 @@ enum audioStates {
 
 const audioPlayerDivId = "audioplayer";
 const audioPlayerCtrlId = "audioplayerctrl";
+const audioPlayerVolId = "audioplayer_volume";
+const audioPlayerMuteId = "audioplayer_volume_icon_playing";
 const animationTime = 500;
 
 class AudioManager {
@@ -18,6 +20,8 @@ class AudioManager {
     private audioPlayerDiv: HTMLDivElement;
     private audioPlayerCtrl: HTMLDivElement;
     private audioPlayerElem: HTMLAudioElement | undefined;
+    private audioPlayerVol: HTMLInputElement;
+    private audioPlayerMute: HTMLInputElement;
 
     private volume = 1;
     private muted = false;
@@ -27,12 +31,34 @@ class AudioManager {
     constructor() {
         this.audioPlayerDiv = HtmlUtils.getElementByIdOrFail<HTMLDivElement>(audioPlayerDivId);
         this.audioPlayerCtrl = HtmlUtils.getElementByIdOrFail<HTMLDivElement>(audioPlayerCtrlId);
-        this.volume = localUserStore.getAudioPlayerVolume();
-        HtmlUtils.getElementByIdOrFail<HTMLInputElement>('audioplayer_volume').value = '' + localUserStore.getAudioPlayerVolume();
+        this.audioPlayerVol = HtmlUtils.getElementByIdOrFail<HTMLInputElement>(audioPlayerVolId);
+        this.audioPlayerMute = HtmlUtils.getElementByIdOrFail<HTMLInputElement>(audioPlayerMuteId);
 
-        this.muted = localUserStore.getAudioPlayerMuted();
+        this.volume = localUserStore.getAudioPlayerVolume();
+	this.audioPlayerVol.value = '' + this.volume;
+
+	this.muted = localUserStore.getAudioPlayerMuted();
         if (this.muted) {
             HtmlUtils.getElementByIdOrFail<HTMLInputElement>('audioplayer_volume_icon_playing').classList.add('muted');
+	}
+    }
+
+    public playAudio(url: string|number|boolean, mapDirUrl: string, loop=false): void {
+        const audioPath = url as string;
+        let realAudioPath = '';
+
+        if (audioPath.indexOf('://') > 0) {
+            // remote file or stream
+            realAudioPath = audioPath;
+        } else {
+            // local file, include it relative to map directory
+            realAudioPath = mapDirUrl + '/' + url;
+        }
+
+        this.loadAudio(realAudioPath);
+
+        if (loop) {
+            this.loop();
         }
     }
 
@@ -54,17 +80,21 @@ class AudioManager {
     }
 
     private changeVolume(talking = false): void {
-        if (!isUndefined(this.audioPlayerElem)) {
-            this.audioPlayerElem.volume = this.naturalVolume(talking && this.decreaseWhileTalking);
-            this.audioPlayerElem.muted = this.muted;
+        if (isUndefined(this.audioPlayerElem)) {
+            return;
         }
-    }
+	
+        const reduceVolume = talking && this.decreaseWhileTalking;
+        if (reduceVolume && !this.volumeReduced) {
+            this.volume *= 0.5;
+        } else if (!reduceVolume && this.volumeReduced) {
+            this.volume *= 2.0;
+        }
+        this.volumeReduced = reduceVolume;
 
-    private naturalVolume(makeSofter: boolean = false): number {
-        const volume = this.volume
-        const retVol = makeSofter && !this.volumeReduced ? Math.pow(volume * 0.5, 3) : volume
-        this.volumeReduced = makeSofter
-        return retVol;
+        this.audioPlayerElem.volume = this.volume;
+        this.audioPlayerVol.value = '' + this.volume;
+        this.audioPlayerElem.muted = this.muted; 
     }
 
     private setVolume(volume: number): void {
@@ -72,7 +102,8 @@ class AudioManager {
         localUserStore.setAudioPlayerVolume(volume);
     }
 
-    public loadAudio(url: string): void {
+
+    private loadAudio(url: string): void {
         this.load();
 
         /* Solution 1, remove whole audio player */
@@ -125,7 +156,7 @@ class AudioManager {
         this.open();
     }
 
-    public loop(): void {
+    private loop(): void {
         if (this.audioPlayerElem !== undefined) {
             this.audioPlayerElem.loop = true;
         }

@@ -109,6 +109,11 @@ export class MenuScene extends Phaser.Scene {
             const adminSection = this.menuElement.getChildByID('adminConsoleSection') as HTMLElement;
             adminSection.hidden = false;
         }
+        //TODO bind with future metadata of card
+        //if (connectionManager.getConnexionType === GameConnexionTypes.anonymous){
+            const socialSection = this.menuElement.getChildByID('socialLinks') as HTMLElement;
+            socialSection.hidden = false;
+        //}
         this.tweens.add({
             targets: this.menuElement,
             x: openedSideMenuX,
