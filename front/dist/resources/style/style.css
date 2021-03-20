@@ -210,6 +210,11 @@ video#myCamVideo{
     transition: all .2s;
     right: 224px;
 }
+.btn-peer-video{
+    pointer-events: auto;
+    transition: all .15s;
+    right: 314px;
+}
 .btn-copy{
     pointer-events: auto;
     transition: all .3s;

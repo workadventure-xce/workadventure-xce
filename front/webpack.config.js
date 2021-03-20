@@ -66,7 +66,8 @@ module.exports = {
             'JITSI_URL',
             'JITSI_PRIVATE_MODE',
             'START_ROOM_URL',
-            'MAX_PER_GROUP'
+            'MAX_PER_GROUP',
+            'API_PROTOCOL'
         ])
     ],
 

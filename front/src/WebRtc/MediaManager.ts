@@ -45,6 +45,8 @@ export class MediaManager {
     monitor: HTMLImageElement;
     microphoneClose: HTMLImageElement;
     microphone: HTMLImageElement;
+    peerVideoClose: HTMLImageElement;
+    peerVideo: HTMLImageElement;
     webrtcInAudio: HTMLAudioElement;
     private webrtcOutAudio: HTMLAudioElement;
     constraintsMedia : MediaStreamConstraints = {
@@ -58,6 +60,7 @@ export class MediaManager {
     private microphoneBtn: HTMLDivElement;
     private cinemaBtn: HTMLDivElement;
     private monitorBtn: HTMLDivElement;
+    private peerVideoBtn: HTMLDivElement;
 
     private previousConstraint : MediaStreamConstraints;
     private focused : boolean = true;
@@ -120,6 +123,23 @@ export class MediaManager {
         this.monitor.addEventListener('click', (e: MouseEvent) => {
             e.preventDefault();
             this.disableScreenSharing();
+            //update tracking
+        });
+
+
+        this.peerVideoBtn = HtmlUtils.getElementByIdOrFail<HTMLDivElement>('btn-peer-video');
+        this.peerVideoClose = HtmlUtils.getElementByIdOrFail<HTMLImageElement>('peer-video-hide');
+        this.peerVideoClose.style.display = "block";
+        this.peerVideoClose.addEventListener('click', (e: MouseEvent) => {
+            e.preventDefault();
+            this.enablePeerVideo();
+            //update tracking
+        });
+        this.peerVideo = HtmlUtils.getElementByIdOrFail<HTMLImageElement>('peer-video');
+        this.peerVideo.style.display = "none";
+        this.peerVideo.addEventListener('click', (e: MouseEvent) => {
+            e.preventDefault();
+            this.disablePeerVideo();
             //update tracking
         });
 
@@ -351,6 +371,20 @@ export class MediaManager {
         this.localScreenCapture = null;
     }
 
+    private enablePeerVideo() {
+        this.peerVideoClose.style.display = "none";
+        this.peerVideo.style.display = "block";
+        this.peerVideoBtn.classList.add("enabled");
+        localStorage.setItem('hidePeerCamera', "false");
+    }
+
+    private disablePeerVideo() {
+        this.peerVideoClose.style.display = "block";
+        this.peerVideo.style.display = "none";
+        this.peerVideoBtn.classList.remove("enabled");
+        localStorage.setItem('hidePeerCamera', "true");
+    }
+
     //get screen
     getScreenMedia() : Promise<MediaStream>{
         try {
@@ -382,7 +416,7 @@ export class MediaManager {
     }
 
     private _startScreenCapture() {
-        if (navigator.getDisplayMedia) { 
+        if (navigator.getDisplayMedia) {
             return navigator.getDisplayMedia({video: true});
         } else if (navigator.mediaDevices.getDisplayMedia) {
             return navigator.mediaDevices.getDisplayMedia({video: true});
@@ -488,9 +522,9 @@ export class MediaManager {
         let hidePeerCamera = localStorage.getItem("hidePeerCamera");
 
         let containerStyle = ""
-        
+
         if (hidePeerCamera == "true") {
-            containerStyle = `style="display:none"` 
+            containerStyle = `style="display:none"`
         }
 
         const html =  `
@@ -509,7 +543,7 @@ export class MediaManager {
         `;
 
         layoutManager.add(DivImportance.Normal, userId, html);
-        
+
         this.remoteVideo.set(userId, HtmlUtils.getElementByIdOrFail<HTMLVideoElement>(userId));
 
         //permit to create participant in discussion part
@@ -527,7 +561,7 @@ export class MediaManager {
             showReportUser();
         });
     }
-    
+
     addScreenSharingActiveVideo(userId: string, divImportance: DivImportance = DivImportance.Important){
 
         userId = this.getScreenSharingId(userId);
@@ -553,7 +587,7 @@ export class MediaManager {
         }
         element.classList.add('active') //todo: why does a method 'disable' add a class 'active'?
     }
-    
+
     enabledMicrophoneByUserId(userId: number){
         const element = document.getElementById(`microphone-${userId}`);
         if(!element){
@@ -561,7 +595,7 @@ export class MediaManager {
         }
         element.classList.remove('active') //todo: why does a method 'enable' remove a class 'active'?
     }
-    
+
     disabledVideoByUserId(userId: number) {
         let element = document.getElementById(`${userId}`);
         if (element) {
@@ -572,7 +606,7 @@ export class MediaManager {
             element.style.display = "block";
         }
     }
-    
+
     enabledVideoByUserId(userId: number){
         let element = document.getElementById(`${userId}`);
         if(element){
@@ -604,7 +638,7 @@ export class MediaManager {
 
         this.addStreamRemoteVideo(this.getScreenSharingId(userId), stream);
     }
-    
+
     removeActiveVideo(userId: string){
         layoutManager.remove(userId);
         this.remoteVideo.delete(userId);
@@ -615,7 +649,7 @@ export class MediaManager {
     removeActiveScreenSharingVideo(userId: string) {
         this.removeActiveVideo(this.getScreenSharingId(userId))
     }
-    
+
     playWebrtcOutSound(): void {
         this.webrtcOutAudio.play();
     }
@@ -661,7 +695,7 @@ export class MediaManager {
         const connnectingSpinnerDiv = element.getElementsByClassName('connecting-spinner').item(0) as HTMLDivElement|null;
         return connnectingSpinnerDiv;
     }
-    
+
     private getColorByString(str: String) : String|null {
         let hash = 0;
         if (str.length === 0) return null;
