@@ -26,6 +26,7 @@ const audioConstraint: boolean|MediaTrackConstraints = {
     noiseSuppression: true
 };
 
+
 export type UpdatedLocalStreamCallback = (media: MediaStream|null) => void;
 export type StartScreenSharingCallback = (media: MediaStream) => void;
 export type StopScreenSharingCallback = (media: MediaStream) => void;
@@ -484,8 +485,16 @@ export class MediaManager {
         userName = userName.toUpperCase();
         const color = this.getColorByString(userName);
 
+        let hidePeerCamera = localStorage.getItem("hidePeerCamera");
+
+        let containerStyle = ""
+        
+        if (hidePeerCamera == "true") {
+            containerStyle = `style="display:none"` 
+        }
+
         const html =  `
-            <div id="div-${userId}" class="video-container">
+            <div id="div-${userId}" class="video-container" ${containerStyle}>
                 <div class="connecting-spinner"></div>
                 <div class="rtc-error" style="display: none"></div>
                 <i id="name-${userId}" style="background-color: ${color};">${userName}</i>
