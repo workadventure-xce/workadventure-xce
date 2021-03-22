@@ -178,7 +178,7 @@ function createAudioConstraintStore() {
         //TODO: make these values configurable in the game settings menu and store them in localstorage
         autoGainControl: false,
         echoCancellation: true,
-        noiseSuppression: true
+        noiseSuppression: false
     } as boolean|MediaTrackConstraints);
 
     let selectedDeviceId = null;
