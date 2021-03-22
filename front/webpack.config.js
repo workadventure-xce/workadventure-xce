@@ -81,7 +81,8 @@ module.exports = {
             'TURN_PASSWORD': null,
             'JITSI_URL': null,
             'JITSI_PRIVATE_MODE': null,
-            'START_ROOM_URL': null
+            'START_ROOM_URL': null,
+            'MAX_PER_GROUP': null,
         })
     ],
 
