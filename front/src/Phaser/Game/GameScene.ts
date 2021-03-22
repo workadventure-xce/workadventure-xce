@@ -10,7 +10,7 @@ import {
     RoomJoinedMessageInterface
 } from "../../Connexion/ConnexionModels";
 import {CurrentGamerInterface, hasMovedEventName, Player} from "../Player/Player";
-import {DEBUG_MODE, JITSI_PRIVATE_MODE, POSITION_DELAY, RESOLUTION, ZOOM_LEVEL, MAX_PER_GROUP} from "../../Enum/EnvironmentVariable";
+import {DEBUG_MODE, PUSHER_URL, JITSI_URL, JITSI_PRIVATE_MODE, POSITION_DELAY, RESOLUTION, ZOOM_LEVEL, MAX_PER_GROUP} from "../../Enum/EnvironmentVariable";
 import {ITiledMap, ITiledMapLayer, ITiledMapLayerProperty, ITiledMapObject, ITiledTileSet} from "../Map/ITiledMap";
 import {AddPlayerInterface} from "./AddPlayerInterface";
 import {PlayerAnimationDirections} from "../Player/Animation";
@@ -113,6 +113,22 @@ interface DeleteGroupEventInterface {
     groupId: number
 }
 
+interface MapProperty {
+    name: string;
+    type: string;
+    value: string|number;
+}
+
+function getMapProperty(mapData: any, name: string, type: string, dflt: any = null): any {
+  if (!Array.isArray(mapData.properties)) {
+    return dflt;
+  }
+
+  const properties: MapProperty[] = mapData.properties;
+  const prop = properties.find((prop: MapProperty) => prop.type === type && prop.name === name)
+  return prop ? prop.value : dflt;
+}
+
 const defaultStartLayerName = 'start';
 
 export class GameScene extends ResizableScene implements CenterListener {
@@ -146,6 +162,7 @@ export class GameScene extends ResizableScene implements CenterListener {
     MapUrlFile: string;
     RoomId: string;
     instance: string;
+    apiUrl: string = PUSHER_URL;
 
     currentTick!: number;
     lastSentTick!: number; // The last tick at which a position was sent.
@@ -252,6 +269,9 @@ export class GameScene extends ResizableScene implements CenterListener {
     // FIXME: we need to put a "unknown" instead of a "any" and validate the structure of the JSON we are receiving.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private async onMapLoad(data: any): Promise<void> {
+        this.apiUrl = getMapProperty(data.data, 'apiUrl', 'string', PUSHER_URL);
+        console.info('apiUrl:', this.apiUrl);
+
         // Triggered when the map is loaded
         // Load tiles attached to the map recursively
         this.mapFile = data.data;
@@ -495,6 +515,7 @@ export class GameScene extends ResizableScene implements CenterListener {
         const camera = this.cameras.main;
 
         connectionManager.connectToRoomSocket(
+            this.apiUrl,
             this.RoomId,
             this.playerName,
             this.characterLayers,
@@ -1455,7 +1476,7 @@ ${escapedMessage}
         const allProps = this.gameMap.getCurrentProperties();
         const jitsiConfig = this.safeParseJSONstring(allProps.get("jitsiConfig") as string|undefined, 'jitsiConfig');
         const jitsiInterfaceConfig = this.safeParseJSONstring(allProps.get("jitsiInterfaceConfig") as string|undefined, 'jitsiInterfaceConfig');
-        const jitsiUrl = allProps.get("jitsiUrl") as string|undefined;
+        const jitsiUrl = (allProps.get("jitsiUrl") as string|undefined) || getMapProperty(this.mapFile, 'jitsiUrl', 'string', JITSI_URL);
 
         jitsiFactory.start(roomName, this.playerName, jwt, jitsiConfig, jitsiInterfaceConfig, jitsiUrl);
         this.connection.setSilent(true);
