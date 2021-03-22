@@ -98,6 +98,7 @@ import {videoFocusStore} from "../../Stores/VideoFocusStore";
 import {biggestAvailableAreaStore} from "../../Stores/BiggestAvailableAreaStore";
 import { InteractiveLayer } from "../Map/InteractiveLayer";
 import {videoManager} from "../../WebRtc/VideoManager";
+import { copyrightInfo } from "../../WebRtc/CopyrightInfo";
 
 export interface GameSceneInitInterface {
     initPosition: PointInterface | null,
@@ -499,6 +500,7 @@ export class GameScene extends DirtyScene {
                 }, 1000);
             }
         }
+        copyrightInfo.initCopyrightInfo(mapDirUrl);
 
         this.createPromiseResolve();
 
