@@ -85,6 +85,7 @@ export class RoomConnection implements RoomConnection {
      * @param companion
      */
     public constructor(
+        apiUrl: string,
         token: string | null,
         roomUrl: string,
         name: string,
@@ -93,7 +94,7 @@ export class RoomConnection implements RoomConnection {
         viewport: ViewportInterface,
         companion: string | null
     ) {
-        let url = new URL(PUSHER_URL, window.location.toString()).toString();
+        let url = new URL(apiUrl, window.location.toString()).toString();
         url = url.replace("http://", "ws://").replace("https://", "wss://");
         if (!url.endsWith("/")) {
             url += "/";

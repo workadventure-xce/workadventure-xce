@@ -12,7 +12,7 @@ import type {
     PositionInterface,
     RoomJoinedMessageInterface,
 } from "../../Connexion/ConnexionModels";
-import { DEBUG_MODE, JITSI_PRIVATE_MODE, MAX_PER_GROUP, POSITION_DELAY } from "../../Enum/EnvironmentVariable";
+import { DEBUG_MODE, JITSI_PRIVATE_MODE, MAX_PER_GROUP, POSITION_DELAY, JITSI_URL, PUSHER_URL } from "../../Enum/EnvironmentVariable";
 
 import { Queue } from "queue-typescript";
 import {
@@ -134,6 +134,26 @@ interface DeleteGroupEventInterface {
     groupId: number;
 }
 
+interface MapProperty {
+    name: string;
+    type: string;
+    value: string|number;
+}
+
+// FIXME: See onMapLoad
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getMapProperty(mapData: any, name: string, type: string, dflt: string|undefined = undefined): any {
+  if (!Array.isArray(mapData.properties)) {
+    return dflt;
+  }
+
+  const properties: MapProperty[] = mapData.properties;
+  const prop = properties.find((prop: MapProperty) => prop.type === type && prop.name === name)
+  return prop ? prop.value : dflt;
+}
+
+const defaultStartLayerName = 'start';
+
 export class GameScene extends DirtyScene {
     Terrains: Array<Phaser.Tilemaps.Tileset>;
     CurrentPlayer!: Player;
@@ -181,6 +201,7 @@ export class GameScene extends DirtyScene {
     MapUrlFile: string;
     roomUrl: string;
     instance: string;
+    apiUrl: string = PUSHER_URL;
 
     currentTick!: number;
     lastSentTick!: number; // The last tick at which a position was sent.
@@ -340,6 +361,9 @@ export class GameScene extends DirtyScene {
     // FIXME: we need to put a "unknown" instead of a "any" and validate the structure of the JSON we are receiving.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private async onMapLoad(data: any): Promise<void> {
+        this.apiUrl = getMapProperty(data.data, 'apiUrl', 'string', PUSHER_URL);
+        console.info('apiUrl:', this.apiUrl);
+
         // Triggered when the map is loaded
         // Load tiles attached to the map recursively
         this.mapFile = data.data;
@@ -641,6 +665,7 @@ export class GameScene extends DirtyScene {
 
         connectionManager
             .connectToRoomSocket(
+                this.apiUrl,
                 this.roomUrl,
                 this.playerName,
                 this.characterLayers,
@@ -1849,7 +1874,8 @@ ${escapedMessage}
             allProps.get("jitsiInterfaceConfig") as string | undefined,
             "jitsiInterfaceConfig"
         );
-        const jitsiUrl = allProps.get("jitsiUrl") as string | undefined;
+        const jitsiUrl = (allProps.get("jitsiUrl") as string | undefined)
+                      || getMapProperty(this.mapFile, "jitsiUrl", "string", JITSI_URL);
         const jitsiWidth = allProps.get("jitsiWidth") as number | undefined;
 
         jitsiFactory.start(roomName, this.playerName, jwt, jitsiConfig, jitsiInterfaceConfig, jitsiUrl, jitsiWidth);
