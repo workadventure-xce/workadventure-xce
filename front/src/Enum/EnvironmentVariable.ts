@@ -13,6 +13,7 @@ const RESOLUTION = 2;
 const ZOOM_LEVEL = 1/*3/4*/;
 const POSITION_DELAY = 200; // Wait 200ms between sending position events
 const MAX_EXTRAPOLATION_TIME = 100; // Extrapolate a maximum of 250ms if no new movement is sent by the player
+const MAX_PER_GROUP = parseInt(process.env.MAX_PER_GROUP || '4');
 
 export {
     DEBUG_MODE,
@@ -24,6 +25,7 @@ export {
     ZOOM_LEVEL,
     POSITION_DELAY,
     MAX_EXTRAPOLATION_TIME,
+    MAX_PER_GROUP,
     STUN_SERVER,
     TURN_SERVER,
     TURN_USER,
