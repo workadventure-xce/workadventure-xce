@@ -36,6 +36,7 @@ body .message-info.warning{
 }
 
 .video-container {
+    pointer-events: all;
     position: relative;
     transition: all 0.2s ease;
     background-color: #00000099;
@@ -586,6 +587,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 /* Let's make sure videos are vertically centered if they need to be cropped */
 .media-container {
+    pointer-events: all;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -593,7 +595,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .chat-mode {
-    display: inline-grid;
+    display: grid;
     width: 100%;
     padding: 1%;
     align-items: flex-start;
@@ -611,19 +613,19 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .chat-mode.one-col {
-    grid-template-columns: auto;
+    grid-template-columns: repeat(1, 1fr);
 }
 
 .chat-mode.two-col {
-    grid-template-columns: auto auto;
+    grid-template-columns: repeat(2, 1fr);
 }
 
 .chat-mode.three-col {
-    grid-template-columns: auto auto auto;
+    grid-template-columns: repeat(3, 1fr);
 }
 
 .chat-mode.four-col {
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: repeat(4, 1fr);
 }
 
 /*GLOBAL MESSAGE*/
@@ -653,7 +655,7 @@ input[type=range]:focus::-ms-fill-upper {
     position: relative;
     padding: 20px;
     margin: 20px;
-    overflow: scroll;
+    overflow: auto;
     max-height: 400px;
 }
 
