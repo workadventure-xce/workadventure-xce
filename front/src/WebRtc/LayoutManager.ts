@@ -196,7 +196,7 @@ class LayoutManager {
         } else {
             HtmlUtils.getElementByIdOrFail<HTMLDivElement>('sidebar').style.display = 'none';
             HtmlUtils.getElementByIdOrFail<HTMLDivElement>('main-section').style.display = 'none';
-            HtmlUtils.getElementByIdOrFail<HTMLDivElement>('chat-mode').style.display = 'inline-grid';
+            HtmlUtils.getElementByIdOrFail<HTMLDivElement>('chat-mode').style.display = 'grid';
         }
 
         for (const div of this.importantDivs.values()) {
