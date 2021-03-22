@@ -66,8 +66,8 @@ export class RoomConnection implements RoomConnection {
      * @param token A JWT token containing the UUID of the user
      * @param roomId The ID of the room in the form "_/[instance]/[map_url]" or "@/[org]/[event]/[map]"
      */
-    public constructor(token: string|null, roomId: string, name: string, characterLayers: string[], position: PositionInterface, viewport: ViewportInterface, companion: string|null) {
-        let url = new URL(PUSHER_URL, window.location.toString()).toString();
+    public constructor(apiUrl: string, token: string|null, roomId: string, name: string, characterLayers: string[], position: PositionInterface, viewport: ViewportInterface, companion: string|null) {
+        let url = new URL(apiUrl, window.location.toString()).toString();
         url = url.replace('http://', 'ws://').replace('https://', 'wss://');
         if (!url.endsWith('/')) {
             url += '/';
