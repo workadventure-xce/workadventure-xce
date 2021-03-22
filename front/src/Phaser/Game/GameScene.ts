@@ -97,6 +97,7 @@ import { GameMapPropertiesListener } from "./GameMapPropertiesListener";
 import type { RadialMenuItem } from "../Components/RadialMenu";
 import {analyticsClient} from "../../Administration/AnalyticsClient";
 import {videoManager} from "../../WebRtc/VideoManager";
+import { copyrightInfo } from "../../WebRtc/CopyrightInfo";
 
 export interface GameSceneInitInterface {
     initPosition: PointInterface | null;
@@ -575,6 +576,7 @@ export class GameScene extends DirtyScene {
                 }, 1000);
             }
         }
+        copyrightInfo.initCopyrightInfo(mapDirUrl);
 
         this.createPromiseResolve();
         // Now, let's load the script, if any
