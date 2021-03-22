@@ -52,6 +52,7 @@ import {jitsiFactory} from "../../WebRtc/JitsiFactory";
 import {urlManager} from "../../Url/UrlManager";
 import {audioManager} from "../../WebRtc/AudioManager";
 import {videoManager} from "../../WebRtc/VideoManager";
+import { copyrightInfo } from "../../WebRtc/CopyrightInfo";
 import {IVirtualJoystick} from "../../types";
 const {
   default: VirtualJoystick,
@@ -455,6 +456,7 @@ export class GameScene extends ResizableScene implements CenterListener {
                 }, 1000);
             }
         }
+        copyrightInfo.initCopyrightInfo(mapDirUrl);
 
         this.createPromiseResolve();
 
