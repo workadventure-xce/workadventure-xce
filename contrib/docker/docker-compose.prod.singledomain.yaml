@@ -81,6 +81,7 @@ services:
       API_URL: back:50051
       JITSI_URL: $JITSI_URL
       JITSI_ISS: $JITSI_ISS
+      FEDERATE_PUSHER: $FEDERATE_PUSHER
     labels:
       - "traefik.http.middlewares.strip-pusher-prefix.stripprefix.prefixes=/pusher"
       - "traefik.http.routers.pusher.rule=Host(`${BASE_DOMAIN}`) && PathPrefix(`/pusher`)"
