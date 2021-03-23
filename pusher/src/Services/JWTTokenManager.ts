@@ -1,4 +1,4 @@
-import { ADMIN_API_URL, ALLOW_ARTILLERY, SECRET_KEY } from "../Enum/EnvironmentVariable";
+import { ADMIN_API_URL, ALLOW_ARTILLERY, SECRET_KEY, FEDERATE_PUSHER } from "../Enum/EnvironmentVariable";
 import { uuid } from "uuidv4";
 import Jwt from "jsonwebtoken";
 import { TokenInterface } from "../Controller/AuthenticateController";
@@ -28,7 +28,23 @@ class JWTTokenManager {
         }
 
         return new Promise<string>((resolve, reject) => {
-            Jwt.verify(token, SECRET_KEY, {}, (err, tokenDecoded) => {
+            // Mock the jwt verification if pusher federation is enabled
+            const mockVerify = (
+                token: string,
+                secret: string,
+                options: {},
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                callback: (err: Error | undefined, result: any) => void
+            ) => {
+                try {
+                    callback(undefined, Jwt.decode(token));
+                } catch (err) {
+                    callback(err, undefined);
+                }
+            };
+            const jwtVerify = FEDERATE_PUSHER ? mockVerify : Jwt.verify;
+
+            jwtVerify(token, SECRET_KEY, {}, (err, tokenDecoded) => {
                 const tokenInterface = tokenDecoded as TokenInterface;
                 if (err) {
                     console.error("An authentication error happened, invalid JsonWebToken.", err);
