@@ -1,0 +1,123 @@
+version: "3"
+services:
+  reverse-proxy:
+    image: traefik:v2.3.7
+    restart: unless-stopped
+    command:
+      - --providers.docker
+      - --entryPoints.web.address=:80
+      - --entrypoints.web.http.redirections.entryPoint.to=websecure
+      - --entrypoints.web.http.redirections.entryPoint.scheme=https
+      - --entrypoints.web.http.redirections.entrypoint.permanent=true
+      - --entryPoints.websecure.address=:443
+      - --providers.file.directory=/configs/
+      - --certificatesresolvers.myhttpchallenge.acme.tlschallenge=true
+      - --certificatesresolvers.myhttpchallenge.acme.email=$ACME_EMAIL
+      - --certificatesresolvers.myhttpchallenge.acme.storage=/letsencrypt/acme.json
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - back
+      - front
+      - up
+      - pusher
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./acme.json:/acme.json
+      - ./traefik_tls.yaml:/configs/traefik_tls.yml
+      - ./.htpasswd:/.htpasswd  
+
+  front:
+    restart: unless-stopped
+    build:
+      context: ../..
+      dockerfile: front/Dockerfile
+      args:
+        BASE_DOMAIN: ${BASE_DOMAIN:-workadventure.localhost}
+
+        # These should fall back to window.location.host
+        API_URL: ""
+        UPLOADER_URL: ""
+
+        START_ROOM_URL: "$START_ROOM_URL"
+        JITSI_PRIVATE_MODE: "$JITSI_PRIVATE_MODE"
+        JITSI_URL: "$JITSI_URL"
+        START_ROOM_URL: "$START_ROOM_URL"
+        STUN_SERVER: "$STUN_SERVER"
+        TURN_PASSWORD: "$TURN_PASSWORD"
+        TURN_SERVER: "$TURN_SERVER"
+        TURN_USER: "$TURN_USER"
+        MAX_PER_GROUP: "$MAX_PER_GROUP"
+    labels:
+      - "traefik.http.routers.front.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.front.rule=Host(`${BASE_DOMAIN}`)"
+      - "traefik.http.routers.front.entryPoints=web"
+      - "traefik.http.services.front.loadbalancer.server.port=8000"
+      - "traefik.http.routers.front-ssl.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.front-ssl.rule=Host(`${BASE_DOMAIN}`)"
+      - "traefik.http.routers.front-ssl.entryPoints=websecure"
+      - "traefik.http.routers.front-ssl.tls=true"
+      - "traefik.http.routers.front-ssl.service=front"
+      - "traefik.http.routers.front-ssl.tls.certresolver=myhttpchallenge"
+# uncomment to enable user/pass basic auth        
+#      - "traefik.http.routers.front.middlewares=auth"
+#      - "traefik.http.routers.front-ssl.middlewares=auth"
+#      - "traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_BASICAUTH}"
+#      - "traefik.http.middlewares.auth.basicauth.usersFile=${TRAEFIK_BASICAUTHFILE}"
+#      - "traefik.http.middlewares.auth.basicauth.headerField=X-WebAuth-User"
+
+
+
+  pusher:
+    restart: unless-stopped
+    build:
+      context: ../..
+      dockerfile: pusher/Dockerfile
+    environment:
+      SECRET_KEY: yourSecretKey
+      SECRET_JITSI_KEY: "$SECRET_JITSI_KEY"
+      ADMIN_API_TOKEN: "$ADMIN_API_TOKEN"
+      ADMIN_API_URL: "$ADMIN_API_URL"
+      API_URL: back:50051
+      JITSI_URL: $JITSI_URL
+      JITSI_ISS: $JITSI_ISS
+    labels:
+      - "traefik.http.routers.pusher.rule=Path(`/admin/rooms`, `/room`, `/verify`, `/register`, `/anonymLogin`, `/metrics`, `/dump`, `/map`)"
+      - "traefik.http.routers.pusher.entryPoints=web"
+      - "traefik.http.services.pusher.loadbalancer.server.port=8080"
+      - "traefik.http.routers.pusher-ssl.rule=Path(`/admin/rooms`, `/room`, `/verify`, `/register`, `/anonymLogin`, `/metrics`, `/dump`, `/map`)"
+      - "traefik.http.routers.pusher-ssl.entryPoints=websecure"
+      - "traefik.http.routers.pusher-ssl.tls=true"
+      - "traefik.http.routers.pusher-ssl.service=pusher"
+      - "traefik.http.routers.pusher-ssl.tls.certresolver=myhttpchallenge"
+
+  back:
+    restart: unless-stopped
+    build:
+      context: ../..
+      dockerfile: back/Dockerfile
+    environment:
+      SECRET_KEY: yourSecretKey
+      SECRET_JITSI_KEY: "$SECRET_JITSI_KEY"
+      ADMIN_API_TOKEN: "$ADMIN_API_TOKEN"
+      ADMIN_API_URL: "$ADMIN_API_URL"
+      JITSI_URL: $JITSI_URL
+      JITSI_ISS: $JITSI_ISS
+      MAX_PER_GROUP: $MAX_PER_GROUP
+
+  up:
+    restart: unless-stopped
+    build:
+      context: ../..
+      dockerfile: uploader/Dockerfile
+    labels:
+      - "traefik.http.routers.up.rule=Path(`/upload-audio-message`, `/download-audio-message`)"
+      - "traefik.http.routers.up.entryPoints=web"
+      - "traefik.http.services.up.loadbalancer.server.port=8080"
+      - "traefik.http.routers.up-ssl.rule=Path(`/upload-audio-message`, `/download-audio-message`)"
+      - "traefik.http.routers.up-ssl.entryPoints=websecure"
+      - "traefik.http.routers.up-ssl.tls=true"
+      - "traefik.http.routers.up-ssl.service=up"
+      - "traefik.http.routers.up-ssl.tls.certresolver=myhttpchallenge"
+ 
