@@ -10,6 +10,7 @@ const CPU_OVERHEAT_THRESHOLD = Number(process.env.CPU_OVERHEAT_THRESHOLD) || 80;
 const JITSI_URL : string|undefined = (process.env.JITSI_URL === '') ? undefined : process.env.JITSI_URL;
 const JITSI_ISS = process.env.JITSI_ISS || '';
 const SECRET_JITSI_KEY = process.env.SECRET_JITSI_KEY || '';
+const FEDERATE_PUSHER = process.env.FEDERATE_PUSHER ? process.env.FEDERATE_PUSHER == 'true' : false;
 const PUSHER_HTTP_PORT = parseInt(process.env.PUSHER_HTTP_PORT || '8080') || 8080
 export const SOCKET_IDLE_TIMER = parseInt(process.env.SOCKET_IDLE_TIMER as string) || 30; // maximum time (in second) without activity before a socket is closed
 
@@ -26,5 +27,6 @@ export {
     JITSI_URL,
     JITSI_ISS,
     SECRET_JITSI_KEY,
+    FEDERATE_PUSHER,
     PUSHER_HTTP_PORT
 }

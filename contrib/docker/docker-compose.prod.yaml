@@ -65,6 +65,7 @@ services:
       API_URL: back:50051
       JITSI_URL: $JITSI_URL
       JITSI_ISS: $JITSI_ISS
+      FEDERATE_PUSHER: $FEDERATE_PUSHER
     labels:
       - "traefik.http.routers.pusher.rule=Host(`pusher.${DOMAIN}`)"
       - "traefik.http.routers.pusher.entryPoints=web,traefik"
