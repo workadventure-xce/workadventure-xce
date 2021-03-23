@@ -82,6 +82,7 @@ services:
       API_URL: back:50051
       JITSI_URL: $JITSI_URL
       JITSI_ISS: $JITSI_ISS
+      FEDERATE_PUSHER: $FEDERATE_PUSHER
     labels:
       - "traefik.http.routers.pusher.rule=Path(`/admin/rooms`, `/room`, `/verify`, `/register`, `/anonymLogin`, `/metrics`, `/dump`, `/map`)"
       - "traefik.http.routers.pusher.entryPoints=web"

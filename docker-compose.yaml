@@ -62,6 +62,7 @@ services:
       API_URL: back:50051
       JITSI_URL: $JITSI_URL
       JITSI_ISS: $JITSI_ISS
+      FEDERATE_PUSHER: $FEDERATE_PUSHER
     volumes:
       - ./pusher:/usr/src/app
     labels:
