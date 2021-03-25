@@ -126,20 +126,21 @@ export class MediaManager {
             //update tracking
         });
 
-
+        // hier stimmt was nicht
+        // beim initalen betreten des raums sind die buttons irgendwie vertauscht-aber auch nicht komplett
         this.peerVideoBtn = HtmlUtils.getElementByIdOrFail<HTMLDivElement>('btn-peer-video');
         this.peerVideoClose = HtmlUtils.getElementByIdOrFail<HTMLImageElement>('peer-video-hide');
         this.peerVideoClose.style.display = "block";
         this.peerVideoClose.addEventListener('click', (e: MouseEvent) => {
             e.preventDefault();
-            this.enablePeerVideo();
+            this.showPeerVideo();
             //update tracking
         });
         this.peerVideo = HtmlUtils.getElementByIdOrFail<HTMLImageElement>('peer-video');
         this.peerVideo.style.display = "none";
         this.peerVideo.addEventListener('click', (e: MouseEvent) => {
             e.preventDefault();
-            this.disablePeerVideo();
+            this.hidePeerVideo();
             //update tracking
         });
 
@@ -147,6 +148,13 @@ export class MediaManager {
         this.pingCameraStatus();
 
         this.checkActiveUser(); //todo: desactivated in case of bug
+
+        //if (localStorage.getItem('hidePeerCamera') == 'true') {
+        //    this.hidePeerVideo;
+        //} else {
+            this.showPeerVideo;
+        //}
+
     }
 
     public setLastUpdateScene(){
@@ -371,18 +379,24 @@ export class MediaManager {
         this.localScreenCapture = null;
     }
 
-    private enablePeerVideo() {
+    private showPeerVideo() {
+        // button
         this.peerVideoClose.style.display = "none";
         this.peerVideo.style.display = "block";
         this.peerVideoBtn.classList.add("enabled");
         localStorage.setItem('hidePeerCamera', "false");
+        //  something
+        document.body.classList.remove('hide-peer-video')
     }
 
-    private disablePeerVideo() {
+    private hidePeerVideo() {
+        // button
         this.peerVideoClose.style.display = "block";
         this.peerVideo.style.display = "none";
         this.peerVideoBtn.classList.remove("enabled");
         localStorage.setItem('hidePeerCamera', "true");
+        // something
+        document.body.classList.add('hide-peer-video')
     }
 
     //get screen
@@ -528,7 +542,7 @@ export class MediaManager {
         }
 
         const html =  `
-            <div id="div-${userId}" class="video-container" ${containerStyle}>
+            <div id="div-${userId}" class="video-container peer-video">
                 <div class="connecting-spinner"></div>
                 <div class="rtc-error" style="display: none"></div>
                 <i id="name-${userId}" style="background-color: ${color};">${userName}</i>

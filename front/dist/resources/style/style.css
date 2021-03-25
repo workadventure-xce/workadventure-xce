@@ -34,6 +34,9 @@ body .message-info.info{
 body .message-info.warning{
     background: #ffa500d6;
 }
+body.hide-peer-video .peer-video {
+    display: none;
+}
 .video-container{
     pointer-events: all;
     position: relative;
