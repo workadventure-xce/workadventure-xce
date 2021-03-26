@@ -1,0 +1,120 @@
+<html>
+<head>
+	<style type="text/css">
+		@font-face {
+		  font-family: "Press Start 2P";
+		  src: url(PressStart2P-Regular.ttf);
+		}	
+	
+		canvas {
+			float: left;
+			border: 1px solid black;
+		}		
+		
+		h1 {
+			font-family: "Press Start 2P";
+			font-size: 20px;
+		}		
+
+		.setting {
+			font-family: "Press Start 2P";
+			font-size: 12px;
+		}		
+		
+		.generator input {
+			height: 64px;
+			display: inline-block;
+			float: left;
+			margin: 0 1em 0 1em;
+		}
+		
+		.generator textarea {
+			width: 256px;
+			height: 512px;
+			display: inline-block;
+			float: left;
+		}
+	</style>
+
+
+	<script type="text/javascript" >
+		function drawText () {
+			var fontName = document.getElementById("fontName").value;
+			var fontColor = document.getElementById("fontColor").value;
+			var marginTop = Number(document.getElementById("marginTop").value);
+			var marginLeft = Number(document.getElementById("marginLeft").value);
+			var fontSize = document.getElementById("fontSize").value;
+			var fontInfo = fontSize + "px " + fontName;
+			
+			var lines = document.getElementById("textToDraw").value.split('\n');
+			var canvas = document.getElementById("textCanvas");
+			var canvasContext = canvas.getContext("2d");
+
+			var tileHeight = 32
+			var maxRows = (canvas.height / tileHeight) - 1;
+			var row = 0;
+			var column = 0;
+			
+			canvasContext.font = fontInfo;
+			canvasContext.fillStyle = fontColor;
+			canvasContext.textAlign = "left";
+			canvasContext.textBaseline = "hanging";
+			canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+
+			for(var n=0; n<lines.length; n++) {
+			
+				var x = (column * 128) + marginLeft;
+				var y = (row * tileHeight) + marginTop;			
+
+				canvasContext.fillText(lines[n], x, y, 128-marginLeft);
+				row++;
+				
+				if(row > maxRows)
+				{
+					column++;
+					row = 0;
+				}
+			}
+		}
+	</script>
+	
+</head>
+<body>
+
+
+	<h1>Text to Tiles</h1>
+	
+	<p>Jede Zeile wird linksbündig in ein Feld von 128px x 32px geschrieben.</p>
+	<p>Das Bild kann per Rechtsklick mit "Bild speichern" direkt als Tileset verwendet oder mit "Bild kopieren" in ein Grafikprogramm übernommen werden.</p>
+	
+	<form>
+		<div class="setting">
+			<label>Font</label> <input id="fontName" value="&quot;Press Start 2P&quot;" style="width:15em"; />	
+		</div>
+		<div class="setting">
+			<label>Size</label> <input id="fontSize" value="8"  style="width:3em"; /> px	
+		</div>
+		<div class="setting">
+			<label>Margin top</label> <input id="marginTop" value="18"  style="width:3em"; /> px	
+		</div>
+		<div class="setting">
+			<label>Margin left</label> <input id="marginLeft" value="20"  style="width:3em"; /> px	
+		</div>
+		<div class="setting">
+			<label>Color</label> <input id="fontColor" value="#cccccc"  style="width:7em"; />
+		</div>
+	</form>
+	
+	<form class="generator">
+	
+	
+		<textarea id="textToDraw"></textarea>
+		<input type="button" value="Draw =>" onclick="drawText();" />
+	</form>
+	
+	<div style="overflow:scroll;width:512px;height:512px">
+		<canvas width="1056" height="1056" id="textCanvas"></canvas>
+	</div>
+	
+	</body>
+</html>
