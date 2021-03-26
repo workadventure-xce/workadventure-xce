@@ -81,6 +81,7 @@ class LocalUserStore {
     }
     getHelpCameraSettingsShown(): boolean {
         return localStorage.getItem(helpCameraSettingsShown) === '1';
+    }
 
     setJoystick(value: boolean): void {
         localStorage.setItem(joystickKey, value.toString());
