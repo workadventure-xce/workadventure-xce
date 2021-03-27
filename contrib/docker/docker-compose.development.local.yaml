@@ -1,0 +1,73 @@
+version: '3'
+services:
+  reverse-proxy:
+    image: traefik:v2.4
+    depends_on:
+      - front
+      - pusher
+    command:
+      - --providers.docker
+      - --entryPoints.web.address=:80
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:z
+    privileged: true
+
+  front:
+    build:
+      context: ../..
+      dockerfile: front/Dockerfile
+      args:
+        START_ROOM_URL: "$START_ROOM_URL"
+        JITSI_PRIVATE_MODE: "$JITSI_PRIVATE_MODE"
+        JITSI_URL: "$JITSI_URL"
+        STUN_SERVER: "$STUN_SERVER"
+        TURN_SERVER: "$TURN_SERVER"
+        TURN_USER: "$TURN_USER"
+        TURN_PASSWORD: "$TURN_PASSWORD"
+    environment:
+      DEBUG_MODE: "$DEBUG_MODE"
+    labels:
+      - "traefik.http.routers.front.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.front.entryPoints=web"
+      - "traefik.http.services.front.loadbalancer.server.port=8000"
+
+  pusher:
+    build:
+      context: ../..
+      dockerfile: pusher/Dockerfile
+    depends_on:
+      - back
+    environment:
+      SECRET_KEY: yourSecretKey
+      SECRET_JITSI_KEY: "$SECRET_JITSI_KEY"
+      ADMIN_API_TOKEN: "$ADMIN_API_TOKEN"
+      API_URL: back:50051
+      JITSI_URL: $JITSI_URL
+      JITSI_ISS: $JITSI_ISS
+    ports:
+      - "9378:8080"
+    labels:
+      - "traefik.http.middlewares.strip-pusher-prefix.stripprefix.prefixes=/pusher"
+      - "traefik.http.routers.pusher.rule=PathPrefix(`/pusher`)"
+      - "traefik.http.routers.pusher.middlewares=strip-pusher-prefix@docker"
+      - "traefik.http.routers.pusher.entryPoints=web"
+      - "traefik.http.services.pusher.loadbalancer.server.port=8080"
+
+  back:
+    build:
+      context: ../..
+      dockerfile: back/Dockerfile
+    environment:
+      SECRET_KEY: yourSecretKey
+      SECRET_JITSI_KEY: "$SECRET_JITSI_KEY"
+      ADMIN_API_TOKEN: "$ADMIN_API_TOKEN"
+      JITSI_URL: $JITSI_URL
+      JITSI_ISS: $JITSI_ISS
+    labels:
+      - "traefik.http.middlewares.strip-api-prefix.stripprefix.prefixes=/api"
+      - "traefik.http.routers.back.rule=PathPrefix(`/api`)"
+      - "traefik.http.routers.back.middlewares=strip-api-prefix@docker"
+      - "traefik.http.routers.back.entryPoints=web"
+      - "traefik.http.services.back.loadbalancer.server.port=8080"
