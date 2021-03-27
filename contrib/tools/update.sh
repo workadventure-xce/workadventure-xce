@@ -55,7 +55,7 @@ fi
 # Fetch
 if [ "$fetch" = 'yes' ]; then
     git fetch
-    git reset --hard origin/xce
+    git rebase --onto origin/xce origin/xce@{1}
 fi
 
 # Rebuild
