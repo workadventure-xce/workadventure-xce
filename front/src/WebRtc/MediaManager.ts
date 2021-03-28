@@ -126,35 +126,31 @@ export class MediaManager {
             //update tracking
         });
 
-        // hier stimmt was nicht
-        // beim initalen betreten des raums sind die buttons irgendwie vertauscht-aber auch nicht komplett
         this.peerVideoBtn = HtmlUtils.getElementByIdOrFail<HTMLDivElement>('btn-peer-video');
         this.peerVideoClose = HtmlUtils.getElementByIdOrFail<HTMLImageElement>('peer-video-hide');
-        this.peerVideoClose.style.display = "block";
+        this.peerVideoClose.style.display = "none";
         this.peerVideoClose.addEventListener('click', (e: MouseEvent) => {
             e.preventDefault();
             this.showPeerVideo();
             //update tracking
         });
         this.peerVideo = HtmlUtils.getElementByIdOrFail<HTMLImageElement>('peer-video');
-        this.peerVideo.style.display = "none";
+        this.peerVideo.style.display = "block";
         this.peerVideo.addEventListener('click', (e: MouseEvent) => {
             e.preventDefault();
             this.hidePeerVideo();
             //update tracking
         });
 
+        // force enablement of peer video on releoad
+        // since we are'nt able to store the peer video state between sessions
+        localStorage.setItem('hidePeerCamera', "false");
+
         this.previousConstraint = JSON.parse(JSON.stringify(this.constraintsMedia));
         this.pingCameraStatus();
 
         this.checkActiveUser(); //todo: desactivated in case of bug
-
-        //if (localStorage.getItem('hidePeerCamera') == 'true') {
-        //    this.hidePeerVideo;
-        //} else {
-            this.showPeerVideo;
-        //}
-
+       
     }
 
     public setLastUpdateScene(){
@@ -318,6 +314,7 @@ export class MediaManager {
         this.getCamera().then((stream: MediaStream) => {
             this.triggerUpdatedLocalStreamCallbacks(stream);
         });
+
     }
 
     private enableCameraStyle(){
