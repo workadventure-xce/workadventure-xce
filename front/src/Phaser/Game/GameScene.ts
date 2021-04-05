@@ -96,6 +96,7 @@ import {soundManager} from "./SoundManager";
 import {peerStore, screenSharingPeerStore} from "../../Stores/PeerStore";
 import {videoFocusStore} from "../../Stores/VideoFocusStore";
 import {biggestAvailableAreaStore} from "../../Stores/BiggestAvailableAreaStore";
+import { InteractiveLayer } from "../Map/InteractiveLayer";
 
 export interface GameSceneInitInterface {
     initPosition: PointInterface | null,
@@ -140,6 +141,8 @@ export class GameScene extends DirtyScene {
     MapPlayers!: Phaser.Physics.Arcade.Group;
     MapPlayersByKey: Map<number, RemotePlayer> = new Map<number, RemotePlayer>();
     Map!: Phaser.Tilemaps.Tilemap;
+    Layers!: Array<Phaser.Tilemaps.TilemapLayer>;
+    interactiveLayers!: Array<InteractiveLayer>;
     Objects!: Array<Phaser.Physics.Arcade.Sprite>;
     mapFile!: ITiledMap;
     animatedTiles!: AnimatedTiles;
@@ -420,9 +423,14 @@ export class GameScene extends DirtyScene {
 
         //add layer on map
         this.gameMap = new GameMap(this.mapFile, this.Map, this.Terrains);
+        this.interactiveLayers = new Array<InteractiveLayer>();
+        const depth = -2;
         for (const layer of this.gameMap.flatLayers) {
             if (layer.type === 'tilelayer') {
-
+                if (this.isLayerInteractive(layer)) {
+                    this.addInteractiveLayer(this.createInteractiveLayer(layer).setDepth(depth));
+                    continue;
+                }
                 const exitSceneUrl = this.getExitSceneUrl(layer);
                 if (exitSceneUrl !== undefined) {
                     this.loadNextGame(exitSceneUrl);
@@ -1087,6 +1095,10 @@ ${escapedMessage}
         return this.getProperty(layer, "exitUrl") as string | undefined;
     }
 
+    private isLayerInteractive(layer: ITiledMapLayer): boolean {
+        return Boolean(this.getProperty(layer, "interactive"));
+    }
+
     /**
      * @deprecated the map property exitSceneUrl is deprecated
      */
@@ -1161,6 +1173,14 @@ ${escapedMessage}
         this.cameras.main.setBounds(0, 0, this.Map.widthInPixels, this.Map.heightInPixels);
         this.cameras.main.startFollow(this.CurrentPlayer, true);
         biggestAvailableAreaStore.recompute();
+    }
+
+    createInteractiveLayer(layer: ITiledMapTileLayer): InteractiveLayer {
+        return new InteractiveLayer(this, layer);
+    }
+
+    addInteractiveLayer(layer: InteractiveLayer): void {
+        this.interactiveLayers.push(layer);
     }
 
     createCollisionWithPlayer() {
