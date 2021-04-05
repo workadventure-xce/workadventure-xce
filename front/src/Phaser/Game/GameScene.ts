@@ -44,7 +44,7 @@ import { RemotePlayer } from "../Entity/RemotePlayer";
 import type { ActionableItem } from "../Items/ActionableItem";
 import type { ItemFactoryInterface } from "../Items/ItemFactoryInterface";
 import { SelectCharacterScene, SelectCharacterSceneName } from "../Login/SelectCharacterScene";
-import type { ITiledMap, ITiledMapLayer, ITiledMapProperty, ITiledMapObject, ITiledTileSet } from "../Map/ITiledMap";
+import type { ITiledMap, ITiledMapLayer, ITiledMapTileLayer, ITiledMapProperty, ITiledMapObject, ITiledTileSet } from "../Map/ITiledMap";
 import { PlayerAnimationDirections } from "../Player/Animation";
 import { hasMovedEventName, Player, requestEmoteEventName } from "../Player/Player";
 import { ErrorSceneName } from "../Reconnecting/ErrorScene";
@@ -90,6 +90,7 @@ import {
 } from "../../Stores/AudioManagerStore";
 import { PropertyUtils } from "../Map/PropertyUtils";
 import Tileset = Phaser.Tilemaps.Tileset;
+import { InteractiveLayer } from "../Map/InteractiveLayer";
 import { userIsAdminStore } from "../../Stores/GameStore";
 import { layoutManagerActionStore } from "../../Stores/LayoutManagerStore";
 import { EmbeddedWebsiteManager } from "./EmbeddedWebsiteManager";
@@ -140,6 +141,8 @@ export class GameScene extends DirtyScene {
     MapPlayers!: Phaser.Physics.Arcade.Group;
     MapPlayersByKey: Map<number, RemotePlayer> = new Map<number, RemotePlayer>();
     Map!: Phaser.Tilemaps.Tilemap;
+    Layers!: Array<Phaser.Tilemaps.TilemapLayer>;
+    interactiveLayers!: Array<InteractiveLayer>;
     Objects!: Array<Phaser.Physics.Arcade.Sprite>;
     mapFile!: ITiledMap;
     animatedTiles!: AnimatedTiles;
@@ -474,8 +477,14 @@ export class GameScene extends DirtyScene {
 
         //add layer on map
         this.gameMap = new GameMap(this.mapFile, this.Map, this.Terrains);
+        this.interactiveLayers = new Array<InteractiveLayer>();
+        const depth = -2;
         for (const layer of this.gameMap.flatLayers) {
-            if (layer.type === "tilelayer") {
+            if (layer.type === 'tilelayer') {
+                if (this.isLayerInteractive(layer)) {
+                    this.addInteractiveLayer(this.createInteractiveLayer(layer).setDepth(depth));
+                    continue;
+                }
                 const exitSceneUrl = this.getExitSceneUrl(layer);
                 if (exitSceneUrl !== undefined) {
                     this.loadNextGame(
@@ -1363,6 +1372,10 @@ ${escapedMessage}
         return this.getProperty(layer, "exitUrl") as string | undefined;
     }
 
+    private isLayerInteractive(layer: ITiledMapLayer): boolean {
+        return Boolean(this.getProperty(layer, "interactive"));
+    }
+
     /**
      * @deprecated the map property exitSceneUrl is deprecated
      */
@@ -1419,6 +1432,14 @@ ${escapedMessage}
         this.cameras.main.setBounds(0, 0, this.Map.widthInPixels, this.Map.heightInPixels);
         this.cameras.main.startFollow(this.CurrentPlayer, true);
         biggestAvailableAreaStore.recompute();
+    }
+
+    createInteractiveLayer(layer: ITiledMapTileLayer): InteractiveLayer {
+        return new InteractiveLayer(this, layer);
+    }
+
+    addInteractiveLayer(layer: InteractiveLayer): void {
+        this.interactiveLayers.push(layer);
     }
 
     createCollisionWithPlayer() {
