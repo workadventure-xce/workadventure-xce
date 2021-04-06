@@ -34,12 +34,11 @@ services:
       context: ../..
       dockerfile: front/Dockerfile
       args:
+        PUSHER_URL: "//$BASE_DOMAIN"
+        ADMIN_URL: "//$BASE_DOMAIN"
+        MAPS_URL: "//$BASE_DOMAIN"
+        UPLOADER_URL: "//$BASE_DOMAIN"
         BASE_DOMAIN: ${BASE_DOMAIN:-workadventure.localhost}
-
-        # These should fall back to window.location.host
-        API_URL: ""
-        UPLOADER_URL: ""
-
         START_ROOM_URL: "$START_ROOM_URL"
         JITSI_PRIVATE_MODE: "$JITSI_PRIVATE_MODE"
         JITSI_URL: "$JITSI_URL"
