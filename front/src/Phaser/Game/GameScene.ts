@@ -69,6 +69,7 @@ import FILE_LOAD_ERROR = Phaser.Loader.Events.FILE_LOAD_ERROR;
 import DOMElement = Phaser.GameObjects.DOMElement;
 import {Subscription} from "rxjs";
 import {worldFullMessageStream} from "../../Connexion/WorldFullMessageStream";
+import { lazyLoadCompanionResource } from "../Companion/CompanionTexturesLoadingManager";
 
 export interface GameSceneInitInterface {
     initPosition: PointInterface|null,
@@ -1028,7 +1029,8 @@ ${escapedMessage}
                 PlayerAnimationDirections.Down,
                 false,
                 this.userInputManager,
-                this.companion
+                this.companion,
+                this.companion !== null ? lazyLoadCompanionResource(this.load, this.companion) : undefined
             );
         }catch (err){
             if(err instanceof TextureError) {
@@ -1221,7 +1223,8 @@ ${escapedMessage}
             texturesPromise,
             addPlayerData.position.direction as PlayerAnimationDirections,
             addPlayerData.position.moving,
-            addPlayerData.companion
+            addPlayerData.companion,
+            addPlayerData.companion !== null ? lazyLoadCompanionResource(this.load, addPlayerData.companion) : undefined
         );
         this.MapPlayers.add(player);
         this.MapPlayersByKey.set(player.userId, player);
