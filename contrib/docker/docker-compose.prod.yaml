@@ -23,7 +23,7 @@ services:
       - pusher
       - front
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./acme.json:/acme.json
     restart: unless-stopped
 
@@ -32,16 +32,20 @@ services:
     build:
       context: ../..
       dockerfile: front/Dockerfile
+      args:
+        - DEBUG_MODE
+        - JITSI_URL
+        - JITSI_PRIVATE_MODE
+        - "PUSHER_URL=//pusher.${DOMAIN}"
+        - TURN_SERVER
+        - TURN_USER
+        - TURN_PASSWORD
+        - START_ROOM_URL
+        - INSERT_ANALYTICS=NO
     #image: thecodingmachine/workadventure-front:master
     environment:
       DEBUG_MODE: "$DEBUG_MODE"
-      JITSI_URL: $JITSI_URL
-      JITSI_PRIVATE_MODE: "$JITSI_PRIVATE_MODE"
-      PUSHER_URL: //pusher.${DOMAIN}
-      TURN_SERVER: "${TURN_SERVER}"
-      TURN_USER: "${TURN_USER}"
-      TURN_PASSWORD: "${TURN_PASSWORD}"
-      START_ROOM_URL: "${START_ROOM_URL}"
+      INSERT_ANALYTICS: "NO"
     labels:
       - "traefik.http.routers.front.rule=Host(`play.${DOMAIN}`)"
       - "traefik.http.routers.front.entryPoints=web,traefik"
