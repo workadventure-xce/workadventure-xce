@@ -4,7 +4,7 @@ import { DirtyScene } from "../Game/DirtyScene";
 const LogoNameIndex: string = "logoLoading";
 const TextName: string = "Loading...";
 const LogoResource: string = "static/images/logo.png";
-const LogoFrame: ImageFrameConfig = { frameWidth: 310, frameHeight: 60 };
+const LogoFrame: ImageFrameConfig = {frameWidth: 352, frameHeight: 64};
 
 export const addLoader = (scene: Phaser.Scene): void => {
     // If there is nothing to load, do not display the loader.
