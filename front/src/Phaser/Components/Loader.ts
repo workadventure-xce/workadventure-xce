@@ -4,7 +4,7 @@ import { DirtyScene } from "../Game/DirtyScene";
 const LogoNameIndex: string = "logoLoading";
 const TextName: string = "Loading...";
 const LogoResource: string = "static/images/logo.png";
-const LogoFrame: ImageFrameConfig = { frameWidth: 310, frameHeight: 60 };
+const LogoFrame: ImageFrameConfig = { frameWidth: 352, frameHeight: 64 };
 
 const loadingBarHeight: number = 16;
 const padding: number = 5;
