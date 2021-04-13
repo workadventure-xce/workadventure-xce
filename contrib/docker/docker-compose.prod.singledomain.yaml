@@ -20,7 +20,7 @@ services:
     depends_on:
       - back
       - front
-      - up
+      - uploader
       - pusher
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -37,8 +37,10 @@ services:
         BASE_DOMAIN: ${BASE_DOMAIN:-workadventure.localhost}
 
         # These should fall back to window.location.host
-        API_URL: ""
-        UPLOADER_URL: ""
+        PUSHER_URL: /pusher
+        UPLOADER_URL: /uploader
+        ADMIN_URL: /admin
+        MAPS_URL: /maps
 
         START_ROOM_URL: "$START_ROOM_URL"
         JITSI_PRIVATE_MODE: "$JITSI_PRIVATE_MODE"
@@ -51,18 +53,13 @@ services:
         MAX_PER_GROUP: "$MAX_PER_GROUP"
     labels:
       - "traefik.http.routers.front.rule=PathPrefix(`/`)"
-      - "traefik.http.routers.front.rule=Host(`${BASE_DOMAIN}`)"
-      - "traefik.http.routers.front.entryPoints=web"
+      - "traefik.http.routers.front.entryPoints=web,websecure"
       - "traefik.http.services.front.loadbalancer.server.port=8000"
-      - "traefik.http.routers.front-ssl.rule=PathPrefix(`/`)"
-      - "traefik.http.routers.front-ssl.rule=Host(`${BASE_DOMAIN}`)"
-      - "traefik.http.routers.front-ssl.entryPoints=websecure"
-      - "traefik.http.routers.front-ssl.tls=true"
-      - "traefik.http.routers.front-ssl.service=front"
-      - "traefik.http.routers.front-ssl.tls.certresolver=myhttpchallenge"
+      - "traefik.http.routers.front.tls=true"
+      - "traefik.http.routers.front.service=front"
+      - "traefik.http.routers.front.tls.certresolver=myhttpchallenge"
 # uncomment to enable user/pass basic auth        
 #      - "traefik.http.routers.front.middlewares=auth"
-#      - "traefik.http.routers.front-ssl.middlewares=auth"
 #      - "traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_BASICAUTH}"
 #      - "traefik.http.middlewares.auth.basicauth.usersFile=${TRAEFIK_BASICAUTHFILE}"
 #      - "traefik.http.middlewares.auth.basicauth.headerField=X-WebAuth-User"
@@ -83,14 +80,13 @@ services:
       JITSI_URL: $JITSI_URL
       JITSI_ISS: $JITSI_ISS
     labels:
-      - "traefik.http.routers.pusher.rule=Path(`/admin/rooms`, `/room`, `/verify`, `/register`, `/anonymLogin`, `/metrics`, `/dump`, `/map`)"
-      - "traefik.http.routers.pusher.entryPoints=web"
+      - "traefik.http.middlewares.strip-pusher-prefix.stripprefix.prefixes=/pusher"
+      - "traefik.http.routers.pusher.rule=PathPrefix(`/pusher`)"
+      - "traefik.http.routers.pusher.middlewares=strip-pusher-prefix@docker"
+      - "traefik.http.routers.pusher.entryPoints=web,websecure"
       - "traefik.http.services.pusher.loadbalancer.server.port=8080"
-      - "traefik.http.routers.pusher-ssl.rule=Path(`/admin/rooms`, `/room`, `/verify`, `/register`, `/anonymLogin`, `/metrics`, `/dump`, `/map`)"
-      - "traefik.http.routers.pusher-ssl.entryPoints=websecure"
-      - "traefik.http.routers.pusher-ssl.tls=true"
-      - "traefik.http.routers.pusher-ssl.service=pusher"
-      - "traefik.http.routers.pusher-ssl.tls.certresolver=myhttpchallenge"
+      - "traefik.http.routers.pusher.tls=true"
+      - "traefik.http.routers.pusher.service=pusher"
 
   back:
     restart: unless-stopped
@@ -105,19 +101,41 @@ services:
       JITSI_URL: $JITSI_URL
       JITSI_ISS: $JITSI_ISS
       MAX_PER_GROUP: $MAX_PER_GROUP
+    labels:
+      - "traefik.http.middlewares.strip-api-prefix.stripprefix.prefixes=/api"
+      - "traefik.http.routers.back.rule=PathPrefix(`/api`)"
+      - "traefik.http.routers.back.middlewares=strip-api-prefix@docker"
+      - "traefik.http.routers.back.entryPoints=web,websecure"
+      - "traefik.http.services.back.loadbalancer.server.port=8080"
+      - "traefik.http.routers.back.tls=true"
+      - "traefik.http.routers.back.service=back"
 
-  up:
+  uploader:
     restart: unless-stopped
     build:
       context: ../..
       dockerfile: uploader/Dockerfile
     labels:
-      - "traefik.http.routers.up.rule=Path(`/upload-audio-message`, `/download-audio-message`)"
-      - "traefik.http.routers.up.entryPoints=web"
-      - "traefik.http.services.up.loadbalancer.server.port=8080"
-      - "traefik.http.routers.up-ssl.rule=Path(`/upload-audio-message`, `/download-audio-message`)"
-      - "traefik.http.routers.up-ssl.entryPoints=websecure"
-      - "traefik.http.routers.up-ssl.tls=true"
-      - "traefik.http.routers.up-ssl.service=up"
-      - "traefik.http.routers.up-ssl.tls.certresolver=myhttpchallenge"
- 
+      - "traefik.http.middlewares.strip-uploader-prefix.stripprefix.prefixes=/uploader"
+      - "traefik.http.routers.uploader.rule=PathPrefix(`/uploader`)"
+      - "traefik.http.routers.uploader.middlewares=strip-uploader-prefix@docker"
+      - "traefik.http.routers.uploader.entryPoints=web,websecure"
+      - "traefik.http.services.uploader.loadbalancer.server.port=8080"
+      - "traefik.http.routers.uploader.tls=true"
+      - "traefik.http.routers.uploader.service=uploader" 
+
+  maps:
+    restart: unless-stopped
+    build:
+      context: ../..
+      dockerfile: maps/Dockerfile
+    volumes:
+      - ../../maps:/var/www/html/
+    labels:
+      - "traefik.http.middlewares.strip-maps-prefix.stripprefix.prefixes=/maps"
+      - "traefik.http.routers.maps.rule=PathPrefix(`/maps`)"
+      - "traefik.http.routers.maps.middlewares=strip-maps-prefix@docker"
+      - "traefik.http.routers.maps.entryPoints=web,websecure"
+      - "traefik.http.services.maps.loadbalancer.server.port=80"
+      - "traefik.http.routers.maps.tls=true"
+      - "traefik.http.routers.maps.service=maps"
