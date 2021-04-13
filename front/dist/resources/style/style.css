@@ -391,7 +391,7 @@ body {
 #audioplayerctrl {
     position: fixed;
     top: 0;
-    right: calc(50% - 120px);
+    left: 25%;
     padding: 0.3rem 0.5rem;
     color: white;
     transition: transform 0.5s;
