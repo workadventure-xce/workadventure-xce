@@ -3,7 +3,7 @@ import ImageFrameConfig = Phaser.Types.Loader.FileTypes.ImageFrameConfig;
 const LogoNameIndex: string = 'logoLoading';
 const TextName: string = 'Loading...';
 const LogoResource: string = 'resources/logos/logo.png';
-const LogoFrame: ImageFrameConfig = {frameWidth: 307, frameHeight: 59};
+const LogoFrame: ImageFrameConfig = {frameWidth: 352, frameHeight: 64};
 
 export const addLoader = (scene: Phaser.Scene): void => {
     // If there is nothing to load, do not display the loader.
