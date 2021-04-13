@@ -4,7 +4,7 @@
 
 Demo here : [https://workadventu.re/](https://workadventu.re/).
 
-# Work Adventure
+# Work Adventure XCE
 
 Work Adventure is a web-based collaborative workspace for small to medium teams (2-100 people) presented in the form of a
 16-bit video game.
@@ -12,6 +12,7 @@ Work Adventure is a web-based collaborative workspace for small to medium teams 
 In Work Adventure, you can move around your office and talk to your colleagues (using a video-chat feature that is
 triggered when you move next to a colleague).
 
+The XCE fork of Work Adventure is meant as an experimental playground to pre-test some new features, change other aspects of the software and have fun.
 
 ## Setting up a development environment
 
