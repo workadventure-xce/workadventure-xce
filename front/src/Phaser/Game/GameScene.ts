@@ -129,7 +129,7 @@ interface MapProperty {
     value: string|number;
 }
 
-function getMapProperty(mapData: any, name: string, type: string, dflt: any = null): any {
+function getMapProperty(mapData: any, name: string, type: string, dflt: any = null): any { //eslint-disable-line @typescript-eslint/no-explicit-any
   if (!Array.isArray(mapData.properties)) {
     return dflt;
   }
