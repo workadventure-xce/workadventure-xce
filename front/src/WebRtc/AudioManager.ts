@@ -142,7 +142,7 @@ class AudioManager {
 
         const muteElem = HtmlUtils.getElementByIdOrFail<HTMLInputElement>('audioplayer_mute');
 	muteElem.onmousedown = (ev: Event) => {
-	    ev.preventDefault();
+		ev.preventDefault();
 	}
         muteElem.onclick = (ev: Event) => {
             this.muted = !this.muted;
