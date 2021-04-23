@@ -31,7 +31,7 @@ class JWTTokenManager {
         return new Promise<string>((resolve, reject) => {
 
             // mock the jwt verification if pusher federation is enabled
-            const jwtVerify = FEDERATE_PUSHER ? (token: string, secret: string, options: {}, cb: (err: any, result: any) => void) => {
+            const jwtVerify = FEDERATE_PUSHER ? (token: string, secret: string, options: {}, cb: (err: any, result: any) => void) => { //eslint-disable-line @typescript-eslint/no-explicit-any
               try {
                 cb(undefined, Jwt.decode(token));
               } catch (err) {
