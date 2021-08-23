@@ -14,9 +14,9 @@ const JITSI_URL: string | undefined = process.env.JITSI_URL === "" ? undefined :
 const JITSI_PRIVATE_MODE: boolean = process.env.JITSI_PRIVATE_MODE == "true";
 const POSITION_DELAY = 200; // Wait 200ms between sending position events
 const MAX_EXTRAPOLATION_TIME = 100; // Extrapolate a maximum of 250ms if no new movement is sent by the player
-export const MAX_USERNAME_LENGTH = parseInt(process.env.MAX_USERNAME_LENGTH || "") || 8;
-export const MAX_PER_GROUP = parseInt(process.env.MAX_PER_GROUP || "4");
-export const DISPLAY_TERMS_OF_USE = process.env.DISPLAY_TERMS_OF_USE == "true";
+const MAX_USERNAME_LENGTH = parseInt(process.env.MAX_USERNAME_LENGTH || "8");
+const MAX_PER_GROUP = parseInt(process.env.MAX_PER_GROUP || "4");
+const DISPLAY_TERMS_OF_USE = process.env.DISPLAY_TERMS_OF_USE == "true";
 export const NODE_ENV = process.env.NODE_ENV || "development";
 export const CONTACT_URL = process.env.CONTACT_URL || undefined;
 export const PROFILE_URL = process.env.PROFILE_URL || undefined;
@@ -40,4 +40,7 @@ export {
     TURN_PASSWORD,
     JITSI_URL,
     JITSI_PRIVATE_MODE,
+    MAX_USERNAME_LENGTH,
+    MAX_PER_GROUP,
+    DISPLAY_TERMS_OF_USE
 };
