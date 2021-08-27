@@ -779,7 +779,7 @@ export class GameScene extends DirtyScene {
                 coWebsiteManager.closeCoWebsite();
             } else {
                 const openWebsiteFunction = () => {
-                    coWebsiteManager.loadCoWebsite(newValue as string, this.MapUrlFile, allProps.get('openWebsiteAllowApi') as boolean | undefined, allProps.get('openWebsitePolicy') as string | undefined);
+                    coWebsiteManager.loadCoWebsite(newValue as string, this.MapUrlFile, allProps.get('openWebsiteAllowApi') as boolean | undefined, allProps.get('openWebsitePolicy') as string | undefined, allProps.get('openWebsiteWidth') as number | undefined);
                     layoutManager.removeActionButton('openWebsite', this.userInputManager);
                 };
 
@@ -1628,8 +1628,9 @@ ${escapedMessage}
         const jitsiConfig = this.safeParseJSONstring(allProps.get("jitsiConfig") as string | undefined, 'jitsiConfig');
         const jitsiInterfaceConfig = this.safeParseJSONstring(allProps.get("jitsiInterfaceConfig") as string | undefined, 'jitsiInterfaceConfig');
         const jitsiUrl = (allProps.get("jitsiUrl") as string | undefined) || getMapProperty(this.mapFile, 'jitsiUrl', 'string', JITSI_URL);
+	const jitsiWidth = allProps.get("jitsiWidth") as number | undefined;
 
-        jitsiFactory.start(roomName, this.playerName, jwt, jitsiConfig, jitsiInterfaceConfig, jitsiUrl);
+        jitsiFactory.start(roomName, this.playerName, jwt, jitsiConfig, jitsiInterfaceConfig, jitsiUrl, jitsiWidth);
         this.connection?.setSilent(true);
         mediaManager.hideGameOverlay();
 
