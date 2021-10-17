@@ -10,11 +10,12 @@ services:
       - --entrypoints.web.http.redirections.entryPoint.scheme=https
       - --entrypoints.web.http.redirections.entrypoint.permanent=true
       - --entryPoints.websecure.address=:443
-      - --entryPoints.websecure.http.tls.certResolver=myhttpchallenge
+      - --entryPoints.websecure.http.tls.certResolver=myresolver
       - --providers.file.directory=/configs/
-      - --certificatesresolvers.myhttpchallenge.acme.tlschallenge=true
-      - --certificatesresolvers.myhttpchallenge.acme.email=$ACME_EMAIL
-      - --certificatesresolvers.myhttpchallenge.acme.storage=/acme/acme.json
+      - --certificatesresolvers.myresolver.acme.email=$ACME_EMAIL
+      - --certificatesresolvers.myresolver.acme.storage=/acme/acme.json
+      - --certificatesresolvers.myresolver.acme.tlschallenge=true
+      - --certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web
 # uncomment for debugging traefik
 #      - --log.level=DEBUG
     ports:
@@ -60,7 +61,6 @@ services:
         DISPLAY_TERMS_OF_USE: "$DISPLAY_TERMS_OF_USE"
     labels:
       - "traefik.http.routers.front.rule=Host(`${BASE_DOMAIN}`) && PathPrefix(`/`)"
-      - "traefik.http.services.front.loadbalancer.server.port=8000"
 # uncomment to enable user/pass basic auth        
 #      - "traefik.http.routers.front.middlewares=auth"
 #      - "traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_BASICAUTH}"
@@ -86,7 +86,6 @@ services:
       - "traefik.http.middlewares.strip-pusher-prefix.stripprefix.prefixes=/pusher"
       - "traefik.http.routers.pusher.rule=Host(`${BASE_DOMAIN}`) && PathPrefix(`/pusher`)"
       - "traefik.http.routers.pusher.middlewares=strip-pusher-prefix@docker"
-      - "traefik.http.services.pusher.loadbalancer.server.port=8080"
 
   back:
     restart: unless-stopped
@@ -105,7 +104,6 @@ services:
       - "traefik.http.middlewares.strip-api-prefix.stripprefix.prefixes=/api"
       - "traefik.http.routers.back.rule=Host(`${BASE_DOMAIN}`) && PathPrefix(`/api`)"
       - "traefik.http.routers.back.middlewares=strip-api-prefix@docker"
-      - "traefik.http.services.back.loadbalancer.server.port=8080"
 
   uploader:
     restart: unless-stopped
@@ -116,7 +114,6 @@ services:
       - "traefik.http.middlewares.strip-uploader-prefix.stripprefix.prefixes=/uploader"
       - "traefik.http.routers.uploader.rule=Host(`${BASE_DOMAIN}`) && PathPrefix(`/uploader`)"
       - "traefik.http.routers.uploader.middlewares=strip-uploader-prefix@docker"
-      - "traefik.http.services.uploader.loadbalancer.server.port=8080"
 
   maps:
     restart: unless-stopped
@@ -129,4 +126,3 @@ services:
       - "traefik.http.middlewares.strip-maps-prefix.stripprefix.prefixes=/maps"
       - "traefik.http.routers.maps.rule=Host(`${BASE_DOMAIN}`) && PathPrefix(`/maps`)"
       - "traefik.http.routers.maps.middlewares=strip-maps-prefix@docker"
-      - "traefik.http.services.maps.loadbalancer.server.port=80"
