@@ -48,3 +48,5 @@ RUN PUSHER_URL=$PUSHER_URL ADMIN_URL=$ADMIN_URL MAPS_URL=$MAPS_URL UPLOADER_URL=
 FROM nginx:mainline-alpine
 COPY front/nginx-vhost.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder2 /usr/src/dist /usr/share/nginx/html
+
+EXPOSE 80
