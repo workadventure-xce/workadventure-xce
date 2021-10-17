@@ -30,7 +30,6 @@ services:
       DEBUG_MODE: "$DEBUG_MODE"
     labels:
       - "traefik.http.routers.front.rule=PathPrefix(`/`)"
-      - "traefik.http.routers.front.entryPoints=web"
       - "traefik.http.services.front.loadbalancer.server.port=8000"
 
   pusher:
@@ -52,7 +51,6 @@ services:
       - "traefik.http.middlewares.strip-pusher-prefix.stripprefix.prefixes=/pusher"
       - "traefik.http.routers.pusher.rule=PathPrefix(`/pusher`)"
       - "traefik.http.routers.pusher.middlewares=strip-pusher-prefix@docker"
-      - "traefik.http.routers.pusher.entryPoints=web"
       - "traefik.http.services.pusher.loadbalancer.server.port=8080"
 
   back:
@@ -69,5 +67,4 @@ services:
       - "traefik.http.middlewares.strip-api-prefix.stripprefix.prefixes=/api"
       - "traefik.http.routers.back.rule=PathPrefix(`/api`)"
       - "traefik.http.routers.back.middlewares=strip-api-prefix@docker"
-      - "traefik.http.routers.back.entryPoints=web"
       - "traefik.http.services.back.loadbalancer.server.port=8080"
