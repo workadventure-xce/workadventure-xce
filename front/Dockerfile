@@ -49,4 +49,4 @@ FROM nginx:mainline-alpine
 COPY front/nginx-vhost.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder2 /usr/src/dist /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE 8000
