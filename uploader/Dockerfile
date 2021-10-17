@@ -16,4 +16,5 @@ ENV NODE_ENV=production
 RUN yarn install --production
 
 USER node
+EXPOSE 8080
 CMD ["yarn", "run", "runprod"]
