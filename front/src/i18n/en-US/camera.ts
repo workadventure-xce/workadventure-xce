@@ -15,6 +15,7 @@ const camera: BaseTranslation = {
         continue: "Continue without webcam",
     },
     my: {
+        silentMode: "Silent mode",
         silentZone: "Silent zone",
     },
 };

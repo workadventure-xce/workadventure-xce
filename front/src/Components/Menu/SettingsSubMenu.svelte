@@ -1,17 +1,19 @@
 <script lang="ts">
     import { localUserStore } from "../../Connexion/LocalUserStore";
-    import { videoConstraintStore } from "../../Stores/MediaStore";
+    import { isSilentStore, videoConstraintStore } from "../../Stores/MediaStore";
     import { HtmlUtils } from "../../WebRtc/HtmlUtils";
     import { menuVisiblilityStore } from "../../Stores/MenuStore";
     import LL, { locale } from "../../i18n/i18n-svelte";
     import type { Locales } from "../../i18n/i18n-types";
     import { displayableLocales, setCurrentLocale } from "../../i18n/locales";
     import { isMediaBreakpointUp } from "../../Utils/BreakpointsUtils";
+    import { gameManager } from "../../Phaser/Game/GameManager";
 
     let fullscreen: boolean = localUserStore.getFullscreen();
     let notification: boolean = localUserStore.getNotification() === "granted";
     let forceCowebsiteTrigger: boolean = localUserStore.getForceCowebsiteTrigger();
     let ignoreFollowRequests: boolean = localUserStore.getIgnoreFollowRequests();
+    let alwaysSilent: boolean = localUserStore.getAlwaysSilent();
     let valueGame: number = localUserStore.getGameQualityValue();
     let valueVideo: number = localUserStore.getVideoQualityValue();
     let valueLocale: string = $locale;
@@ -80,6 +82,17 @@
 
     function changeIgnoreFollowRequests() {
         localUserStore.setIgnoreFollowRequests(ignoreFollowRequests);
+    }
+
+    function changeAlwaysSilent() {
+        localUserStore.setAlwaysSilent(alwaysSilent);
+        const scene = gameManager.getCurrentGameScene();
+        const silentZone = scene.isSilentZone();
+        const silent = alwaysSilent || silentZone;
+        scene.connection?.setSilent(silent);
+        // We need to make sure this flag toggles at least once to update UI
+        isSilentStore.set(!silent);
+        isSilentStore.set(silent);
     }
 
     function closeMenu() {
@@ -196,6 +209,15 @@
                 on:change={changeIgnoreFollowRequests}
             />
             <span>{$LL.menu.settings.ignoreFollowRequest()}</span>
+        </label>
+        <label>
+            <input
+                type="checkbox"
+                class="nes-checkbox is-dark"
+                bind:checked={alwaysSilent}
+                on:change={changeAlwaysSilent}
+            />
+            <span>{$LL.menu.settings.silentMode()}</span>
         </label>
     </section>
 </div>

@@ -15,6 +15,7 @@ const camera: NonNullable<Translation["camera"]> = {
         continue: "Continuer sans webcam",
     },
     my: {
+        silentMode: "Moyen silencieuse",
         silentZone: "Zone silencieuse",
     },
 };

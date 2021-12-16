@@ -337,6 +337,8 @@ export class RoomConnection implements RoomConnection {
                     this.tags = roomJoinedMessage.tag;
                     this._userRoomToken = roomJoinedMessage.userRoomToken;
 
+                    this.setSilent(localUserStore.getAlwaysSilent());
+
                     this._roomJoinedMessageStream.next({
                         connection: this,
                         room: {
