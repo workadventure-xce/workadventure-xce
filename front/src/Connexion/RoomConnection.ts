@@ -20,6 +20,7 @@ import { get } from "svelte/store";
 import { followRoleStore, followUsersStore } from "../Stores/FollowStore";
 import { menuIconVisiblilityStore, menuVisiblilityStore, warningContainerStore } from "../Stores/MenuStore";
 import { localUserStore } from "./LocalUserStore";
+import { denyProximityMeetingStore } from "../Stores/MediaStore";
 import {
     ServerToClientMessage as ServerToClientMessageTsProto,
     TokenExpiredMessage,
@@ -420,6 +421,10 @@ export class RoomConnection implements RoomConnection {
                     const characterLayers = roomJoinedMessage.characterLayer.map(
                         this.mapCharacterLayerToBodyResourceDescription.bind(this)
                     );
+
+                    if (localUserStore.getAlwaysSilent()) {
+                        denyProximityMeetingStore.set(true);
+                    }
 
                     this._roomJoinedMessageStream.next({
                         connection: this,

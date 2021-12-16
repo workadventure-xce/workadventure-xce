@@ -74,6 +74,7 @@ const menu: NonNullable<Translation["menu"]> = {
         cowebsiteTrigger: "在打开网页和Jitsi Meet会议前总是询问",
         ignoreFollowRequest: "忽略跟随其他用户的请求",
         blockAudio: "Block ambient sounds and music",
+        silentMode: "Silent mode (disable proximity chat)",
     },
     invite: {
         description: "分享该房间的链接！",

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { localUserStore } from "../../Connexion/LocalUserStore";
-    import { videoConstraintStore } from "../../Stores/MediaStore";
     import { audioManagerFileStore, audioManagerVisibilityStore } from "../../Stores/AudioManagerStore";
+    import { denyProximityMeetingStore, videoConstraintStore } from "../../Stores/MediaStore";
     import { HtmlUtils } from "../../WebRtc/HtmlUtils";
     import { menuVisiblilityStore } from "../../Stores/MenuStore";
     import LL, { locale } from "../../i18n/i18n-svelte";
@@ -18,6 +18,7 @@
     let forceCowebsiteTrigger: boolean = localUserStore.getForceCowebsiteTrigger();
     let ignoreFollowRequests: boolean = localUserStore.getIgnoreFollowRequests();
     let decreaseAudioPlayerVolumeWhileTalking: boolean = localUserStore.getDecreaseAudioPlayerVolumeWhileTalking();
+    let alwaysSilent: boolean = localUserStore.getAlwaysSilent();
     let valueGame: number = localUserStore.getGameQualityValue();
     let valueVideo: number = localUserStore.getVideoQualityValue();
     let valueLocale: string = $locale;
@@ -115,6 +116,11 @@
 
     function changeDecreaseAudioPlayerVolumeWhileTalking() {
         localUserStore.setDecreaseAudioPlayerVolumeWhileTalking(decreaseAudioPlayerVolumeWhileTalking);
+    }
+
+    function changeAlwaysSilent() {
+        localUserStore.setAlwaysSilent(alwaysSilent);
+        denyProximityMeetingStore.set(alwaysSilent);
     }
 
     function closeMenu() {
@@ -231,6 +237,10 @@
         <label>
             <input type="checkbox" bind:checked={blockAudio} on:change={changeBlockAudio} />
             <span>{$LL.menu.settings.blockAudio()}</span>
+        </label>
+        <label>
+            <input type="checkbox" bind:checked={alwaysSilent} on:change={changeAlwaysSilent} />
+            <span>{$LL.menu.settings.silentMode()}</span>
         </label>
     </section>
 </div>
