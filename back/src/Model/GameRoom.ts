@@ -125,7 +125,6 @@ export class GameRoom {
             joinRoomMessage.getIpaddress(),
             position,
             false,
-            [],
             this.positionNotifier,
             socket,
             joinRoomMessage.getTagList(),
@@ -155,6 +154,14 @@ export class GameRoom {
         if (userObj !== undefined && typeof userObj.group !== "undefined") {
             this.leaveGroup(userObj);
         }
+
+        if (user.hasFollowers()) {
+            user.stopLeading();
+        }
+        if (user.following) {
+            user.following.delFollower(user);
+        }
+
         this.users.delete(user.id);
         this.usersByUuid.delete(user.uuid);
 
@@ -217,29 +224,24 @@ export class GameRoom {
         } else {
             // If the user is part of a group:
             //  should he leave the group?
-            const leaveIfOutOfRadius = (user: User) => {
-                if (user.group === undefined) {
+            const users = user.group.getUsers().filter((u) => !u.hasFollowers() && !u.following);
+            users.forEach((foreignUser: User) => {
+                if (foreignUser.group === undefined) {
                     return;
                 }
-                const usrPos = user.getPosition();
-                const grpPos = user.group.getPosition();
+                const usrPos = foreignUser.getPosition();
+                const grpPos = foreignUser.group.getPosition();
                 const distance = GameRoom.computeDistanceBetweenPositions(usrPos, grpPos);
                 if (distance > this.groupRadius) {
-                    this.leaveGroup(user);
+                    this.leaveGroup(foreignUser);
                 }
-            };
-            if (user.following.length > 0) {
-                const users = user.group.getUsers().filter((u) => u.following.length === 0);
-                users.forEach((foreignUser) => leaveIfOutOfRadius(foreignUser));
-            } else {
-                leaveIfOutOfRadius(user);
-            }
+            });
         }
     }
 
     public sendToOthersInGroupIncludingUser(user: User, message: ServerToClientMessage): void {
         user.group?.getUsers().forEach((currentUser: User) => {
-            if (currentUser.name !== user.name) {
+            if (currentUser.id !== user.id) {
                 currentUser.socket.write(message);
             }
         });
