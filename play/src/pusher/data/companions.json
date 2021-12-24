@@ -38,6 +38,78 @@
         "name": "cat3",
         "behavior": "cat",
         "url": "resources/characters/pipoya/Cat 01-3.png"
+      },
+      {
+        "id": "Drone",
+        "name": "Drone",
+        "behavior": "cat",
+        "url": "resources/companions/Drone.png"
+      },
+      {
+        "id": "Penguin",
+        "name": "Penguin",
+        "behavior": "cat",
+        "url": "resources/companions/Penguin.png"
+      },
+      {
+        "id": "RobotVacuum",
+        "name": "RobotVacuum",
+        "behavior": "cat",
+        "url": "resources/companions/RobotVacuum.png"
+      },
+      {
+        "id": "Roomba",
+        "name": "Roomba",
+        "behavior": "cat",
+        "url": "resources/companions/Roomba.png"
+      },
+      {
+        "id": "ClaymoreRoomba",
+        "name": "ClaymoreRoomba",
+        "behavior": "cat",
+        "url": "resources/companions/Claymore_Roomba.png"
+      },
+      {
+        "id": "Smiley",
+        "name": "Smiley",
+        "behavior": "cat",
+        "url": "resources/companions/Smiley.png"
+      },
+      {
+        "id": "blauhai",
+        "name": "blauhai",
+        "behavior": "cat",
+        "url": "resources/companions/blauhai3.png"
+      },
+      {
+        "id": "champ1",
+        "name": "champ1",
+        "behavior": "cat",
+        "url": "resources/companions/littlechamp.png"
+      },
+      {
+        "id": "champ2",
+        "name": "champ2",
+        "behavior": "cat",
+        "url": "resources/companions/littlechamp2.png"
+      },
+      {
+        "id": "champ3",
+        "name": "champ3",
+        "behavior": "cat",
+        "url": "resources/companions/littlechamp3.png"
+      },
+      {
+        "id": "champ4",
+        "name": "champ4",
+        "behavior": "cat",
+        "url": "resources/companions/littlechamp4.png"
+      },
+      {
+        "id": "fairydust",
+        "name": "fairydust",
+        "behavior": "cat",
+        "url": "resources/companions/fairydust.png"
       }
     ]
   }
