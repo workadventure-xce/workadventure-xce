@@ -1,20 +1,12 @@
 <script lang="ts">
     import { gameManager } from "../../Phaser/Game/GameManager";
     import { SelectCompanionScene, SelectCompanionSceneName } from "../../Phaser/Login/SelectCompanionScene";
-    import {
-        menuIconVisiblilityStore,
-        menuVisiblilityStore,
-        userIsConnected,
-        profileAvailable,
-        getProfileUrl,
-    } from "../../Stores/MenuStore";
+    import { menuIconVisiblilityStore, menuVisiblilityStore } from "../../Stores/MenuStore";
     import { selectCompanionSceneVisibleStore } from "../../Stores/SelectCompanionStore";
     import { LoginScene, LoginSceneName } from "../../Phaser/Login/LoginScene";
     import { loginSceneVisibleStore } from "../../Stores/LoginSceneStore";
     import { selectCharacterSceneVisibleStore } from "../../Stores/SelectCharacterStore";
     import { SelectCharacterScene, SelectCharacterSceneName } from "../../Phaser/Login/SelectCharacterScene";
-    import { connectionManager } from "../../Connexion/ConnectionManager";
-    import { PROFILE_URL } from "../../Enum/EnvironmentVariable";
     import { EnableCameraScene, EnableCameraSceneName } from "../../Phaser/Login/EnableCameraScene";
     import { enableCameraSceneVisibilityStore } from "../../Stores/MediaStore";
     import btnProfileSubMenuCamera from "../images/btn-menu-profile-camera.svg";
@@ -46,11 +38,6 @@
         disableMenuStores();
         selectCharacterSceneVisibleStore.set(true);
         gameManager.leaveGame(SelectCharacterSceneName, new SelectCharacterScene());
-    }
-
-    async function logOut() {
-        disableMenuStores();
-        return connectionManager.logout();
     }
 
     function openEnableCameraScene() {
@@ -114,34 +101,7 @@
         </section>
     </div>
 
-    <div class="content">
-        <section class="centered-column tw-w-full tw-m-auto resizing-text">
-            {#if $userIsConnected && $profileAvailable}
-                {#if PROFILE_URL != undefined}
-                    <iframe
-                        title="profile"
-                        src={getProfileUrl()}
-                        class="tw-w-4/5 tw-h-screen tw-border-1 tw-border-solid tw-border-light-blue"
-                    />
-                {/if}
-                <button
-                    type="button"
-                    class="btn outline resizing-width tw-justify-center"
-                    on:click={() => analyticsClient.logout()}
-                    on:click={logOut}>{$LL.menu.profile.logout()}</button
-                >
-            {:else}
-                <a
-                    type="button"
-                    class="btn light resizing-width tw-justify-center"
-                    href="/login"
-                    on:click={() => analyticsClient.login()}
-                >
-                    {$LL.menu.profile.login()}</a
-                >
-            {/if}
-        </section>
-    </div>
+    <div class="content" />
 </div>
 
 <style lang="scss">
