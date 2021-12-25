@@ -208,14 +208,6 @@ export class GameMapPropertiesListener {
             audioManagerVisibilityStore.set(!(newValue === undefined));
         });
 
-        // TODO: This legacy property should be removed at some point
-        this.gameMap.onPropertyChange(GameMapProperties.PLAY_AUDIO_LOOP, (newValue) => {
-            newValue === undefined
-                ? audioManagerFileStore.unloadAudio()
-                : audioManagerFileStore.playAudio(newValue, this.scene.getMapDirUrl(), undefined, true);
-            audioManagerVisibilityStore.set(!(newValue === undefined));
-        });
-
         // TODO: Legacy functionnality replace by layer change
         this.gameMap.onPropertyChange(GameMapProperties.ZONE, (newValue, oldValue) => {
             if (oldValue) {
