@@ -14,6 +14,7 @@ const audioPlayerVolumeKey = "audioVolume";
 const audioPlayerMuteKey = "audioMute";
 const helpCameraSettingsShown = "helpCameraSettingsShown";
 const fullscreenKey = "fullscreen";
+const blockAudio = "blockAudio";
 const forceCowebsiteTriggerKey = "forceCowebsiteTrigger";
 const ignoreFollowRequests = "ignoreFollowRequests";
 const decreaseAudioPlayerVolumeWhileTalking = "decreaseAudioPlayerVolumeWhileTalking";
@@ -153,6 +154,13 @@ class LocalUserStore {
 
     getFullscreen(): boolean {
         return localStorage.getItem(fullscreenKey) === "true";
+    }
+
+    setBlockAudio(value: boolean): void {
+        localStorage.setItem(blockAudio, value.toString());
+    }
+    getBlockAudio(): boolean {
+        return localStorage.getItem(blockAudio) === "true";
     }
 
     setForceCowebsiteTrigger(value: boolean): void {

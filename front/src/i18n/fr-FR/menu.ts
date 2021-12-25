@@ -73,6 +73,7 @@ const menu: NonNullable<Translation["menu"]> = {
         notifications: "Notifications",
         cowebsiteTrigger: "Demander toujours avant d'ouvrir des sites web et des salles de conférence Jitsi",
         ignoreFollowRequest: "Ignorer les demandes de suivi des autres utilisateurs",
+        blockAudio: "Désactiver bruits ambiants et musique",
     },
     invite: {
         description: "Partager le lien de la salle!",

@@ -72,6 +72,7 @@ const menu: NonNullable<Translation["menu"]> = {
         notifications: "Benachrichtigungen",
         cowebsiteTrigger: "Jedes mal nachfragen bevor Webseiten oder Jitsi Meet Räume geöffnet werden",
         ignoreFollowRequest: "Ignoriere Folgen-Anfragen anderer Nutzer",
+        blockAudio: "Musik und Hintergrund-Geräusche deaktivieren",
     },
     invite: {
         description: "Link zu diesem Raum teilen!",
