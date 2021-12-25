@@ -305,86 +305,6 @@ export const ACCESSORIES_RESOURCES: BodyResourceDescriptionListInterface = {
         name: "accessory_1",
         img: "resources/customisation/character_accessories/character_accessories1.png",
     },
-    accessory_2: {
-        name: "accessory_2",
-        img: "resources/customisation/character_accessories/character_accessories2.png",
-    },
-    accessory_3: {
-        name: "accessory_3",
-        img: "resources/customisation/character_accessories/character_accessories3.png",
-    },
-    accessory_4: {
-        name: "accessory_4",
-        img: "resources/customisation/character_accessories/character_accessories4.png",
-    },
-    accessory_5: {
-        name: "accessory_5",
-        img: "resources/customisation/character_accessories/character_accessories5.png",
-    },
-    accessory_6: {
-        name: "accessory_6",
-        img: "resources/customisation/character_accessories/character_accessories6.png",
-    },
-    accessory_7: {
-        name: "accessory_7",
-        img: "resources/customisation/character_accessories/character_accessories7.png",
-    },
-    accessory_8: {
-        name: "accessory_8",
-        img: "resources/customisation/character_accessories/character_accessories8.png",
-    },
-    accessory_9: {
-        name: "accessory_9",
-        img: "resources/customisation/character_accessories/character_accessories9.png",
-    },
-    accessory_10: {
-        name: "accessory_10",
-        img: "resources/customisation/character_accessories/character_accessories10.png",
-    },
-    accessory_11: {
-        name: "accessory_11",
-        img: "resources/customisation/character_accessories/character_accessories11.png",
-    },
-    accessory_12: {
-        name: "accessory_12",
-        img: "resources/customisation/character_accessories/character_accessories12.png",
-    },
-    accessory_13: {
-        name: "accessory_13",
-        img: "resources/customisation/character_accessories/character_accessories13.png",
-    },
-    accessory_14: {
-        name: "accessory_14",
-        img: "resources/customisation/character_accessories/character_accessories14.png",
-    },
-    accessory_15: {
-        name: "accessory_15",
-        img: "resources/customisation/character_accessories/character_accessories15.png",
-    },
-    accessory_16: {
-        name: "accessory_16",
-        img: "resources/customisation/character_accessories/character_accessories16.png",
-    },
-    accessory_17: {
-        name: "accessory_17",
-        img: "resources/customisation/character_accessories/character_accessories17.png",
-    },
-    accessory_18: {
-        name: "accessory_18",
-        img: "resources/customisation/character_accessories/character_accessories18.png",
-    },
-    accessory_19: {
-        name: "accessory_19",
-        img: "resources/customisation/character_accessories/character_accessories19.png",
-    },
-    accessory_20: {
-        name: "accessory_20",
-        img: "resources/customisation/character_accessories/character_accessories20.png",
-    },
-    accessory_21: {
-        name: "accessory_21",
-        img: "resources/customisation/character_accessories/character_accessories21.png",
-    },
     accessory_22: {
         name: "accessory_22",
         img: "resources/customisation/character_accessories/character_accessories22.png",
@@ -400,34 +320,6 @@ export const ACCESSORIES_RESOURCES: BodyResourceDescriptionListInterface = {
     accessory_25: {
         name: "accessory_25",
         img: "resources/customisation/character_accessories/character_accessories25.png",
-    },
-    accessory_26: {
-        name: "accessory_26",
-        img: "resources/customisation/character_accessories/character_accessories26.png",
-    },
-    accessory_27: {
-        name: "accessory_27",
-        img: "resources/customisation/character_accessories/character_accessories27.png",
-    },
-    accessory_28: {
-        name: "accessory_28",
-        img: "resources/customisation/character_accessories/character_accessories28.png",
-    },
-    accessory_29: {
-        name: "accessory_29",
-        img: "resources/customisation/character_accessories/character_accessories29.png",
-    },
-    accessory_30: {
-        name: "accessory_30",
-        img: "resources/customisation/character_accessories/character_accessories30.png",
-    },
-    accessory_31: {
-        name: "accessory_31",
-        img: "resources/customisation/character_accessories/character_accessories31.png",
-    },
-    accessory_32: {
-        name: "accessory_32",
-        img: "resources/customisation/character_accessories/character_accessories32.png",
     },
     accessory_mate_bottle: {
         name: "accessory_mate_bottle",
