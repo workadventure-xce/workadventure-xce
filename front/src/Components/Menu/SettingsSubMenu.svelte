@@ -20,9 +20,11 @@
     let valueGame: number = localUserStore.getGameQualityValue();
     let valueVideo: number = localUserStore.getVideoQualityValue();
     let valueLocale: string = $locale;
+    let blockExternalContent: boolean = localUserStore.getBlockExternalContent();
     let previewValueGame = valueGame;
     let previewValueVideo = valueVideo;
     let previewValueLocale = valueLocale;
+    let previousBlockExternalContent = blockExternalContent;
 
     function saveSetting() {
         let change = false;
@@ -40,6 +42,12 @@
         if (valueGame !== previewValueGame) {
             previewValueGame = valueGame;
             localUserStore.setGameQualityValue(valueGame);
+            change = true;
+        }
+
+        if (blockExternalContent !== previousBlockExternalContent) {
+            previousBlockExternalContent = blockExternalContent;
+            localUserStore.setBlockExternalContent(blockExternalContent);
             change = true;
         }
 
@@ -186,6 +194,12 @@
                 {/each}
             </select>
         </div>
+    </section>
+    <section>
+        <label>
+            <input type="checkbox" class="nes-checkbox is-dark" bind:checked={blockExternalContent} />
+            <span>{$LL.menu.settings.blockExternalContent()}</span>
+        </label>
     </section>
     <section class="settings-section-save">
         <p>{$LL.menu.settings.save.warning()}</p>
