@@ -75,6 +75,7 @@ const menu: NonNullable<Translation["menu"]> = {
         ignoreFollowRequest: "Ignorer les demandes de suivi des autres utilisateurs",
         blockAudio: "Désactiver bruits ambiants et musique",
         silentMode: "Moyen silencieuse (désactiver chatter)",
+        disableAnimations: "Désactiver les animations de la carte",
     },
     invite: {
         description: "Partager le lien de la salle!",

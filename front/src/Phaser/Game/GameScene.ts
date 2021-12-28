@@ -607,6 +607,9 @@ export class GameScene extends DirtyScene {
 
         this.animatedTiles.init(this.Map);
         this.events.on("tileanimationupdate", () => (this.dirty = true));
+        if (localUserStore.getDisableAnimations()) {
+            this.animatedTiles.pause();
+        }
 
         this.initCirclesCanvas();
 

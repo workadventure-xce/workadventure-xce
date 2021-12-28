@@ -19,6 +19,7 @@ const forceCowebsiteTriggerKey = "forceCowebsiteTrigger";
 const ignoreFollowRequests = "ignoreFollowRequests";
 const decreaseAudioPlayerVolumeWhileTalking = "decreaseAudioPlayerVolumeWhileTalking";
 const alwaysSilent = "alwaysSilent";
+const disableAnimations = "disableAnimations";
 const lastRoomUrl = "lastRoomUrl";
 const authToken = "authToken";
 const state = "state";
@@ -192,6 +193,13 @@ class LocalUserStore {
     }
     getAlwaysSilent(): boolean {
         return localStorage.getItem(alwaysSilent) === "true";
+    }
+
+    setDisableAnimations(value: boolean): void {
+        localStorage.setItem(disableAnimations, value.toString());
+    }
+    getDisableAnimations(): boolean {
+        return localStorage.getItem(disableAnimations) === "true";
     }
 
     async setLastRoomUrl(roomUrl: string): Promise<void> {
