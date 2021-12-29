@@ -22,6 +22,7 @@ import { connectionManager } from "./ConnectionManager";
 import { get } from "svelte/store";
 import { warningContainerStore } from "../Stores/MenuStore";
 import { followStateStore, followRoleStore, followUsersStore } from "../Stores/FollowStore";
+import { requestedCameraState } from "../Stores/MediaStore";
 import { localUserStore } from "./LocalUserStore";
 import {
     RefreshRoomMessage,
@@ -338,6 +339,11 @@ export class RoomConnection implements RoomConnection {
                     this._userRoomToken = roomJoinedMessage.userRoomToken;
 
                     this.setSilent(localUserStore.getAlwaysSilent());
+                    if (localUserStore.getNoVideo()) {
+                        requestedCameraState.disableWebcam();
+                    } else {
+                        requestedCameraState.enableWebcam();
+                    }
 
                     this._roomJoinedMessageStream.next({
                         connection: this,
