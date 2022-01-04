@@ -273,7 +273,8 @@ class ConnectionManager {
         characterLayers: string[],
         position: PositionInterface,
         viewport: ViewportInterface,
-        companion: string | null
+        companion: string | null,
+        pusherUrl: string | null
     ): Promise<OnConnectInterface> {
         return new Promise<OnConnectInterface>((resolve, reject) => {
             const connection = new RoomConnection(
@@ -283,7 +284,8 @@ class ConnectionManager {
                 characterLayers,
                 position,
                 viewport,
-                companion
+                companion,
+                pusherUrl
             );
 
             connection.onConnectError((error: object) => {
@@ -312,9 +314,15 @@ class ConnectionManager {
                 this.reconnectingTimeout = setTimeout(() => {
                     //todo: allow a way to break recursion?
                     //todo: find a way to avoid recursive function. Otherwise, the call stack will grow indefinitely.
-                    void this.connectToRoomSocket(roomUrl, name, characterLayers, position, viewport, companion).then(
-                        (connection) => resolve(connection)
-                    );
+                    void this.connectToRoomSocket(
+                        roomUrl,
+                        name,
+                        characterLayers,
+                        position,
+                        viewport,
+                        companion,
+                        pusherUrl
+                    ).then((connection) => resolve(connection));
                 }, 4000 + Math.floor(Math.random() * 2000));
             });
         });

@@ -149,6 +149,7 @@ export class RoomConnection implements RoomConnection {
      * @param position
      * @param viewport
      * @param companion
+     * @param pusherUrl
      */
     public constructor(
         token: string | null,
@@ -157,16 +158,17 @@ export class RoomConnection implements RoomConnection {
         characterLayers: string[],
         position: PositionInterface,
         viewport: ViewportInterface,
-        companion: string | null
+        companion: string | null,
+        pusherUrl: string | null
     ) {
-        let url = new URL(PUSHER_URL, window.location.toString()).toString();
+        let url = new URL(pusherUrl ? pusherUrl : PUSHER_URL, window.location.toString()).toString();
         url = url.replace("http://", "ws://").replace("https://", "wss://");
         if (!url.endsWith("/")) {
             url += "/";
         }
         url += "room";
         url += "?roomId=" + encodeURIComponent(roomUrl);
-        url += "&token=" + (token ? encodeURIComponent(token) : "");
+        // url += "&token=" + (token ? encodeURIComponent(token) : "");
         url += "&name=" + encodeURIComponent(name);
         for (const layer of characterLayers) {
             url += "&characterLayers=" + encodeURIComponent(layer);

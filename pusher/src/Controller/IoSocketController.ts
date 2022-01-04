@@ -231,7 +231,11 @@ export class IoSocketController {
                     const websocketExtensions = req.getHeader("sec-websocket-extensions");
                     const IPAddress = req.getHeader("x-forwarded-for");
 
-                    const roomId = query.roomId;
+                    const roomId =
+                        typeof query.roomId != "string"
+                            ? query.roomId
+                            : "https://dummy.fediventure.net/_/global" +
+                              query.roomId.replace(new RegExp("[^_]*_/[^/]*/"), "/");
                     try {
                         if (typeof roomId !== "string") {
                             throw new Error("Undefined room ID: ");

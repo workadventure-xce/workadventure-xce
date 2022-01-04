@@ -207,6 +207,7 @@ export class GameScene extends DirtyScene {
     };
 
     private gameMap!: GameMap;
+    private pusherUrl: string | null = null;
     private actionableItems: Map<number, ActionableItem> = new Map<number, ActionableItem>();
     public userInputManager!: UserInputManager;
     private isReconnecting: boolean | undefined = undefined;
@@ -742,6 +743,8 @@ export class GameScene extends DirtyScene {
      * Initializes the connection to Pusher.
      */
     private connect(): void {
+        this.pusherUrl = this.getPusherUrl(this.mapFile);
+
         const camera = this.cameraManager.getCamera();
 
         connectionManager
@@ -758,7 +761,8 @@ export class GameScene extends DirtyScene {
                     right: camera.scrollX + camera.width,
                     bottom: camera.scrollY + camera.height,
                 },
-                this.companion
+                this.companion,
+                this.pusherUrl
             )
             .then((onConnect: OnConnectInterface) => {
                 this.connection = onConnect.connection;
@@ -1675,6 +1679,10 @@ ${escapedMessage}
         return (this.getProperties(map, GameMapProperties.SCRIPT) as string[]).map((script) =>
             new URL(script, this.MapUrlFile).toString()
         );
+    }
+
+    private getPusherUrl(map: ITiledMap): string {
+        return (this.getProperties(map, GameMapProperties.PUSHER_URL) as string[])[0];
     }
 
     private getProperty(layer: ITiledMapLayer | ITiledMap, name: string): string | boolean | number | undefined {
