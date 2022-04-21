@@ -110,6 +110,12 @@
         "name": "fairydust",
         "behavior": "cat",
         "url": "resources/companions/fairydust.png"
+      },
+      {
+        "id": "Alpaka1",
+        "name": "Alpaka1",
+        "behavior": "cat",
+        "url": "resources/companions/Alpaka_companion.png"
       }
     ]
   }
