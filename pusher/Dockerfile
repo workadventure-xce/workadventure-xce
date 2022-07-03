@@ -3,7 +3,7 @@
 # When the issue above is closed, we can move back messages building inside Dockerfile
 
 # protobuf build
-FROM --platform=$BUILDPLATFORM node:14.18.2-buster-slim@sha256:20bedf0c09de887379e59a41c04284974f5fb529cf0e13aab613473ce298da3d as proto-builder
+FROM node:14.18.2-buster-slim@sha256:20bedf0c09de887379e59a41c04284974f5fb529cf0e13aab613473ce298da3d as proto-builder
 WORKDIR /usr/src
 COPY messages/yarn.lock messages/package.json ./
 RUN yarn install
