@@ -58,6 +58,7 @@ const menu: BaseTranslation = {
         cowebsiteTrigger: "Always ask before opening websites and Jitsi Meet rooms",
         ignoreFollowRequest: "Ignore requests to follow other users",
         blockAudio: "Block ambient sounds and music",
+        disableAnimations: "Disable map tile animations",
     },
     invite: {
         description: "Share the link of the room!",

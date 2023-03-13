@@ -21,6 +21,7 @@ const blockAudio = "blockAudio";
 const forceCowebsiteTriggerKey = "forceCowebsiteTrigger";
 const ignoreFollowRequests = "ignoreFollowRequests";
 const decreaseAudioPlayerVolumeWhileTalking = "decreaseAudioPlayerVolumeWhileTalking";
+const disableAnimations = "disableAnimations";
 const lastRoomUrl = "lastRoomUrl";
 const authToken = "authToken";
 const notification = "notificationPermission";
@@ -192,6 +193,13 @@ class LocalUserStore {
     }
     getDecreaseAudioPlayerVolumeWhileTalking(): boolean {
         return localStorage.getItem(decreaseAudioPlayerVolumeWhileTalking) === "true";
+    }
+
+    setDisableAnimations(value: boolean): void {
+        localStorage.setItem(disableAnimations, value.toString());
+    }
+    getDisableAnimations(): boolean {
+        return localStorage.getItem(disableAnimations) === "true";
     }
 
     async setLastRoomUrl(roomUrl: string): Promise<void> {

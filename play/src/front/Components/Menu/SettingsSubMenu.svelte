@@ -4,6 +4,7 @@
     import { LL, locale } from "../../../i18n/i18n-svelte";
     import type { Locales } from "../../../i18n/i18n-types";
     import { displayableLocales, setCurrentLocale } from "../../../i18n/locales";
+    import { gameManager } from "../../Phaser/Game/GameManager";
 
     import infoImg from "../images/info.svg";
     import { iframeListener } from "../../Api/IframeListener";
@@ -25,6 +26,7 @@
     let forceCowebsiteTrigger: boolean = localUserStore.getForceCowebsiteTrigger();
     let ignoreFollowRequests: boolean = localUserStore.getIgnoreFollowRequests();
     let decreaseAudioPlayerVolumeWhileTalking: boolean = localUserStore.getDecreaseAudioPlayerVolumeWhileTalking();
+    let disableAnimations: boolean = localUserStore.getDisableAnimations();
     let valueLocale: string = $locale;
     let valueCameraPrivacySettings = localUserStore.getCameraPrivacySettings();
     let valueMicrophonePrivacySettings = localUserStore.getMicrophonePrivacySettings();
@@ -152,6 +154,15 @@
         analyticsClient.settingDecreaseAudioVolume(decreaseAudioPlayerVolumeWhileTalking ? "true" : "false");
 
         localUserStore.setDecreaseAudioPlayerVolumeWhileTalking(decreaseAudioPlayerVolumeWhileTalking);
+    }
+
+    function changeDisableAnimations() {
+        localUserStore.setDisableAnimations(disableAnimations);
+        if (disableAnimations) {
+            gameManager.getCurrentGameScene().animatedTiles.pause();
+        } else {
+            gameManager.getCurrentGameScene().animatedTiles.resume();
+        }
     }
 
     function changeCameraPrivacySettings() {
@@ -294,6 +305,10 @@
         <label>
             <input type="checkbox" bind:checked={blockAudio} on:change={changeBlockAudio} />
             <span>{$LL.menu.settings.blockAudio()}</span>
+        </label>
+        <label>
+            <input type="checkbox" bind:checked={disableAnimations} on:change={changeDisableAnimations} />
+            <span>{$LL.menu.settings.disableAnimations()}</span>
         </label>
     </section>
 </div>
