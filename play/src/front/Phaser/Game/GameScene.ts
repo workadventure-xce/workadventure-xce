@@ -17,7 +17,13 @@ import {
     SpaceFilterMessage,
 } from "@workadventure/messages";
 import { z } from "zod";
-import { ITiledMap, ITiledMapLayer, ITiledMapObject, ITiledMapTileset } from "@workadventure/tiled-map-type-guard";
+import {
+    ITiledMap,
+    ITiledMapLayer,
+    ITiledMapObject,
+    ITiledMapTileLayer,
+    ITiledMapTileset,
+} from "@workadventure/tiled-map-type-guard";
 import {
     ENTITIES_FOLDER_PATH_NO_PREFIX,
     ENTITY_COLLECTION_FILE,
@@ -74,6 +80,7 @@ import type {
 import type { RoomConnection } from "../../Connection/RoomConnection";
 import type { ActionableItem } from "../Items/ActionableItem";
 import type { ItemFactoryInterface } from "../Items/ItemFactoryInterface";
+import { InteractiveLayer } from "../Map/InteractiveLayer";
 import { peerStore } from "../../Stores/PeerStore";
 import { biggestAvailableAreaStore } from "../../Stores/BiggestAvailableAreaStore";
 import { layoutManagerActionStore } from "../../Stores/LayoutManagerStore";
@@ -215,6 +222,8 @@ export class GameScene extends DirtyScene {
     CurrentPlayer!: Player;
     MapPlayersByKey: MapStore<number, RemotePlayer> = new MapStore<number, RemotePlayer>();
     Map!: Phaser.Tilemaps.Tilemap;
+    Layers!: Array<Phaser.Tilemaps.TilemapLayer>;
+    interactiveLayers!: Array<InteractiveLayer>;
     Objects!: Array<Phaser.Physics.Arcade.Sprite>;
     mapFile!: ITiledMap;
     wamFile!: WAMFileFormat;
@@ -598,8 +607,14 @@ export class GameScene extends DirtyScene {
             this.Terrains
         );
         this.gameMapFrontWrapper.initialize().catch((e) => console.error(e));
+        this.interactiveLayers = new Array<InteractiveLayer>();
+        const depth = -2;
         for (const layer of this.gameMapFrontWrapper.getFlatLayers()) {
             if (layer.type === "tilelayer") {
+                if (this.isLayerInteractive(layer)) {
+                    this.addInteractiveLayer(this.createInteractiveLayer(layer).setDepth(depth));
+                    continue;
+                }
                 const exitSceneUrl = this.getExitSceneUrl(layer);
                 if (exitSceneUrl !== undefined) {
                     this.loadNextGame(
@@ -3211,6 +3226,10 @@ ${escapedMessage}
         return property;
     }
 
+    private isLayerInteractive(layer: ITiledMapLayer): boolean {
+        return Boolean(PropertyUtils.findBooleanProperty("interactive", layer.properties));
+    }
+
     /**
      * @deprecated the map property exitSceneUrl is deprecated
      */
@@ -3253,6 +3272,14 @@ ${escapedMessage}
             ...this.gameMapFrontWrapper.getActivatableEntities(),
         ]);
         this.activatablesManager.deduceSelectedActivatableObjectByDistance();
+    }
+
+    private createInteractiveLayer(layer: ITiledMapTileLayer): InteractiveLayer {
+        return new InteractiveLayer(this, layer);
+    }
+
+    private addInteractiveLayer(layer: InteractiveLayer): void {
+        this.interactiveLayers.push(layer);
     }
 
     private createCollisionWithPlayer() {
