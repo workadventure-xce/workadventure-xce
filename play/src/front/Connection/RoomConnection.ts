@@ -323,6 +323,7 @@ export class RoomConnection implements RoomConnection {
 
             const serverToClientMessage = ServerToClientMessageTsProto.decode(new Uint8Array(arrayBuffer));
 
+            console.log(serverToClientMessage);
             const message = serverToClientMessage.message;
             if (message === undefined) {
                 return;
@@ -1700,6 +1701,8 @@ export class RoomConnection implements RoomConnection {
 
     private resetPingTimeout(): void {
         if (this.timeout) {
+            let timeLeft = this.timeoutStart + manualPingDelay - performance.now();
+            console.log(`Resetting ping timeout (time left: ${timeLeft/1000})`);
             clearTimeout(this.timeout);
             this.timeout = undefined;
         }

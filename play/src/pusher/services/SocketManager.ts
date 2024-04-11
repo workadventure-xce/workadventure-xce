@@ -262,6 +262,13 @@ export class SocketManager implements ZoneEventListener {
                             this.refreshRoomData(refreshMessage.roomId, refreshMessage.versionNumber);
                             break;
                         }
+                        case "batchMessage": {
+                            for (const payload of message.message.batchMessage.payload) {
+                                if (payload.message?.$case === "pingMessage") {
+                                    console.log(`Received ping message from back, forwarding to client ${socketData.name}`);
+                                }
+                            }
+                        }
                     }
 
                     // Let's pass data over from the back to the client.
